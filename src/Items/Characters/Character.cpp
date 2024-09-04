@@ -70,7 +70,7 @@ void Character::setOnGround(bool onGround) {
 
 void Character::processInput() {
     auto velocity = getVelocity();
-    const auto moveSpeed = 0.3;
+    const auto moveSpeed = 0.15;
     bool moving = false;
     if (isLeftDown()) {
         velocity.setX( - moveSpeed);
@@ -87,10 +87,10 @@ void Character::processInput() {
     }
     auto acceleration = QPointF(0, 0);
     if (isOnGround() && isJumpDown() && !lastJumpDown) {
-        acceleration.setY(-0.19);
+        acceleration.setY(-0.015);
         onGround = false;
     } else {
-        acceleration.setY(0.01);
+        acceleration.setY(0.001);
     }
     setVelocity(velocity);
     setAcceleration(acceleration);
@@ -102,6 +102,11 @@ void Character::processInput() {
     }
     lastPickDown = pickDown;
     lastJumpDown = jumpDown;
+}
+
+void Character::updateMove(double deltaTime) {
+    setVelocity(getVelocity() + getAcceleration() * deltaTime);
+    setPos(pos() + getVelocity() * deltaTime);
 }
 
 bool Character::isPicking() const {

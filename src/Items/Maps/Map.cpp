@@ -29,30 +29,26 @@ void Map::scaleToFitScene(QGraphicsScene *scene) {
 QPointF Map::getSpawnPos() {
     auto boundingRect = sceneBoundingRect();
     auto midX = (boundingRect.left() + boundingRect.right()) * 0.5;
-    return {midX, getFloorInfos().front().height};
+    return {midX, getFloorHeight()};
 }
 
-std::vector<FloorInfo> Map::getFloorInfos() {
-    return floorInfos;
+qreal Map::getFloorHeight() {
+    auto sceneRect = sceneBoundingRect();
+    return sceneRect.top() + (sceneRect.top() - sceneRect.bottom()) * 0.5;
 }
 
-void Map::addFloor(qreal startX, qreal endX, qreal height) {
-    FloorInfo floorInfo;
-    floorInfo.startX = startX;
-    floorInfo.endX = endX;
-    floorInfo.height = height;
-    floorInfos.push_back(floorInfo);
+QPointF Map::getFloorRange() {
+    auto sceneRect = sceneBoundingRect();
+    return {sceneRect.left(), sceneRect.right()};
 }
 
 bool Map::isOnFloor(const QPointF &pos) {
-    auto floorInfos = getFloorInfos();
-    qreal tolerance = 0.1; // 允许的误差范围
+    qreal floorHeight = getFloorHeight();
+    qreal tolerance = 5; // 允许的误差范围
 
-    for (const auto &floorInfo : floorInfos){
-        if (std::abs(pos.y() - floorInfo.height) < tolerance &&
-            pos.x() >= floorInfo.startX && pos.x() <= floorInfo.endX){
-            return true;
-        }
+    // 检查角色是否在地板高度的误差范围内
+    if (std::abs(pos.y() - floorHeight) < tolerance) {
+        return true;
     }
     return false;
 }

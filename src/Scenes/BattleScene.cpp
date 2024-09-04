@@ -6,25 +6,32 @@
 #include "BattleScene.h"
 #include "../Items/Characters/Link.h"
 #include "../Items/Maps/Battlefield.h"
+#include "../Items/Maps/Platform.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     // This is useful if you want the scene to have the exact same dimensions as the view
     setSceneRect(0, 0, 1280, 720);
-    map = new Battlefield();
+    maps.push_back(new Battlefield());
+    maps.push_back(new Platform(nullptr, MaterialType::Wood,1));
+    maps.push_back(new Platform(nullptr, MaterialType::Stone,2));
+    maps.push_back(new Platform(nullptr, MaterialType::Metal,3));
+    
     characters.push_back(new Link()); // 第一个角色
     characters.push_back(new Link()); // 第二个角色
     spareArmor = new FlamebreakerArmor();
-    addItem(map);
+    for (auto map : maps) {
+        addItem(map);
+        map->scaleToFitScene(this);
+    }
     for (auto character : characters) {
         addItem(character);
     }
     addItem(spareArmor);
-    map->scaleToFitScene(this);
-    characters[0]->setPos(map->getSpawnPos());
-    characters[1]->setPos(map->getSpawnPos() + QPointF(50, 0)); // 第二个角色的位置稍微偏移
+    characters[0]->setPos(maps[0]->getSpawnPos());
+    characters[1]->setPos(maps[0]->getSpawnPos() + QPointF(50, 0)); // 第二个角色的位置稍微偏移
     spareArmor->unmount();
-    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorInfos().front().height);
+    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, maps[0]->getFloorHeight());
 }
 
 void BattleScene::processInput() {
@@ -137,39 +144,43 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
 void BattleScene::update() {
     Scene::update();
 }
-
 void BattleScene::processMovement() {
     Scene::processMovement();
     for (auto character : characters) {
         if (character != nullptr) {
-            character->setOnGround(map->isOnFloor(character->pos()));
-            character->setVelocity(character->getVelocity() + character->getAcceleration() * (double) deltaTime);
-            character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
-            
-            // 碰撞检测：如果人物的位置低于地面且位于地面内，调整人物的位置并重置速度和加速度
-            auto posY = character->pos().y();
-            auto posX = character->pos().x();
-            auto velocity = character->getVelocity();
-            auto floorInfos = map->getFloorInfos();
-            
-            // 如果物体在 y 方向的速度是下落的，则进行地板碰撞检测
-            if (velocity.y() >= 0) {
-                // 预测下一帧的位置
-                auto nextPosY = posY + velocity.y() * deltaTime;
-                auto nextPosX = posX + velocity.x() * deltaTime;
-            
-                for (const auto& floorInfo : floorInfos) {
-                    if (
-                        posY <= floorInfo.height + 60 && // 当前 y 值处于地板或地板下方一帧的高度
-                        nextPosY > floorInfo.height && // 预测的 y 值低于地板高度
-                        nextPosX >= floorInfo.startX && nextPosX <= floorInfo.endX) {
-                        character->setY(floorInfo.height);
-                        character->setVelocity({character->getVelocity().x(), 0});
-                        character->setAcceleration({character->getAcceleration().x(), 0});
-                        break; // 找到一个匹配的地板后退出循环
-                    }
+            for (auto map : maps) { // 对每个 map 进行循环
+                if (map->isOnFloor(character->pos())) {
+                    character->setOnGround(true);
                 }
+                character->updateMove(deltaTime);
+                checkCollision(character, map);
             }
+        }
+    }
+}
+
+void BattleScene::checkCollision(Character* character, Map* map) {
+    // 碰撞检测：如果人物的位置低于地面且位于地面内，调整人物的位置并重置速度和加速度
+    auto posY = character->pos().y();
+    auto posX = character->pos().x();
+    auto velocity = character->getVelocity();
+    auto floorHeight = map->getFloorHeight();
+    auto floorRange = map->getFloorRange();
+
+    // 如果物体在 y 方向的速度是下落的，则进行地板碰撞检测
+    if (velocity.y() >= 0) {
+        // 预测下一帧的位置
+        auto nextPosY = posY + velocity.y() * deltaTime;
+        auto nextPosX = posX + velocity.x() * deltaTime;
+
+        // 检查角色是否在地板上或地板下方一帧的高度，并且在地图的边界矩形内
+        if (posY <= floorHeight + 60 && // 当前 y 值处于地板或地板下方一帧的高度
+            nextPosY > floorHeight && // 预测的 y 值低于地板高度
+            nextPosX >= floorRange.x() && nextPosX <= floorRange.y() // 预测的 x 值在地图的边界矩形内 
+            ){
+            character->setY(floorHeight);
+            character->setVelocity({character->getVelocity().x(), 0});
+            character->setAcceleration({character->getAcceleration().x(), 0});
         }
     }
 }

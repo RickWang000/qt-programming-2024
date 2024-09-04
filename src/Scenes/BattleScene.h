@@ -20,6 +20,8 @@ public:
 
     void processMovement() override;
 
+    void checkCollision(Character *character, Map *map);
+
     void processPicking() override;
 
 protected slots:
@@ -37,7 +39,7 @@ private:
 
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
 
-    Map *map;
+    std::vector<Map*> maps;
     std::vector<Character*> characters;
     Armor *spareArmor;
 };

@@ -9,29 +9,19 @@
 #include <QPointF>
 #include "../Item.h"
 
-struct FloorInfo {
-    qreal startX;
-    qreal endX;
-    qreal height;
-};
-
 class Map : public Item {
 public:
     explicit Map(QGraphicsItem *parent = nullptr, const QString &pixmapPath = "");
 
-    void scaleToFitScene(QGraphicsScene *scene);
+    virtual void scaleToFitScene(QGraphicsScene *scene);
 
-    virtual std::vector<FloorInfo> getFloorInfos(); // Need to rewrite to support multiple platforms
+    virtual qreal getFloorHeight();
+
+    virtual QPointF getFloorRange();
 
     virtual bool isOnFloor(const QPointF &pos);
 
     virtual QPointF getSpawnPos();
-
-protected:
-    void addFloor(qreal startX, qreal endX, qreal height);
-
-private:
-    std::vector<FloorInfo> floorInfos{};
 };
 
 

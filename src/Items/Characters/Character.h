@@ -48,6 +48,8 @@ public:
     
     void setOnGround(bool onGround);
 
+    void updateMove(double deltaTime);
+
 protected:
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
