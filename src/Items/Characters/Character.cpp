@@ -5,11 +5,12 @@
 #include <QTransform>
 #include "Character.h"
 
-Character::Character(QGraphicsItem *parent) : Item(parent, "") {
+Character::Character(QGraphicsItem *parent) : Item(parent,""), healthText(new QGraphicsTextItem(this)), healthBar(new QGraphicsRectItem(this)) {
 //    ellipseItem = new QGraphicsEllipseItem(-5, -5, 10, 10, this);
 //    // Optionally, set some properties of the ellipse
 //    ellipseItem->setBrush(Qt::green);          // Fill color
 //    ellipseItem->setZValue(1);
+    initHealthDisplay();
 }
 
 bool Character::isLeftDown() const {
@@ -126,3 +127,36 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     return oldArmor;
 }
 
+// 获取生命值
+int Character::getHealth() const { return health; }
+
+// 设置生命值
+void Character::setHealth(int health) { this->health = health; }
+
+// 处理受到的伤害
+void Character::takeDamage(int damage) {
+    health -= damage;
+    if (health < 0) {
+        health = 0;
+    }
+}
+
+// 初始化生命值显示
+void Character::initHealthDisplay() {
+    // 初始化血条
+    healthBar->setRect(0, 0, 100, 15);
+    healthBar->setBrush(Qt::red); 
+    healthBar->setPos(-50, -220);
+    healthBar->setZValue(0);
+    // 初始化生命值显示
+    healthText->setPos(-50, -220);
+    healthText->setDefaultTextColor(Qt::black);
+    healthText->setPlainText(QString("%1").arg(health));
+    healthText->setZValue(1);
+}
+
+// 更新生命值显示
+void Character::updateHealthDisplay() {
+    healthBar->setRect(0, 0, health, 15);
+    healthText->setPlainText(QString("%1").arg(health));
+}

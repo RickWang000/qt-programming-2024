@@ -223,3 +223,24 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
     }
     return nullptr;
 }
+
+// void BattleScene::updateHealthDisplay() {
+//     for (auto character : characters) {
+//         if (character != nullptr) {
+//             // 更新生命值显示逻辑
+//             // 例如：在屏幕上显示角色的生命值
+//             int health = character->getHealth();
+//             // 显示生命值的代码
+//         }
+//     }
+// }
+
+// void BattleScene::checkGameOver() {
+//     for (auto character : characters) {
+//         if (character != nullptr && character->getHealth() <= 0) {
+//             // 游戏结束逻辑
+//             // 例如：显示胜利者
+//             // 判定另一方胜利
+//         }
+//     }
+// }
