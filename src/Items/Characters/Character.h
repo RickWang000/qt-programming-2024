@@ -54,11 +54,11 @@ protected:
     Armor *armor{};
     QPointF velocity{};
     QPointF acceleration{};
-    
+
 //    QGraphicsEllipseItem *ellipseItem; // for debugging
 private:
     bool leftDown{}, rightDown{}, jumpDown{}, pickDown{};
-    bool lastPickDown{};
+    bool lastPickDown{}, lastJumpDown{};
     bool picking{};
     bool onGround{};
 };

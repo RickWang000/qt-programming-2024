@@ -86,16 +86,11 @@ void Character::processInput() {
         velocity.setX(0);
     }
     auto acceleration = QPointF(0, 0);
-    if (isOnGround()) {
-        if (isJumpDown()) {
-            acceleration.setY(-0.05);
-            onGround = false;
-        } else {
-            velocity.setY(0);
-            acceleration.setY(0);
-        }
+    if (isOnGround() && isJumpDown() && !lastJumpDown) {
+        acceleration.setY(-0.2);
+        onGround = false;
     } else {
-        acceleration.setY(0.004);
+        acceleration.setY(0.01);
     }
     setVelocity(velocity);
     setAcceleration(acceleration);
@@ -106,6 +101,7 @@ void Character::processInput() {
         picking = false;
     }
     lastPickDown = pickDown;
+    lastJumpDown = jumpDown;
 }
 
 bool Character::isPicking() const {

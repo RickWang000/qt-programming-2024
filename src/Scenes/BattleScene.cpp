@@ -98,17 +98,25 @@ void BattleScene::processMovement() {
         // 碰撞检测：如果人物的位置低于地面且位于地面内，调整人物的位置并重置速度和加速度
         auto posY = character->pos().y();
         auto posX = character->pos().x();
+        auto velocity = character->getVelocity();
         auto floorInfos = map->getFloorInfos();
         
-        qreal tolerance = 20; // 允许的误差范围
+        // 如果物体在 y 方向的速度是下落的，则进行地板碰撞检测
+        if (velocity.y() >= 0) {
+            // 预测下一帧的位置
+            auto nextPosY = posY + velocity.y() * deltaTime;
+            auto nextPosX = posX + velocity.x() * deltaTime;
         
-        for (const auto& floorInfo : floorInfos) {
-            if (posY > floorInfo.height && posY < floorInfo.height + tolerance &&
-                posX >= floorInfo.startX && posX <= floorInfo.endX) {
-                character->setY(floorInfo.height);
-                character->setVelocity({character->getVelocity().x(), 0});
-                character->setAcceleration({character->getAcceleration().x(), 0});
-                break; // 找到一个匹配的地板后退出循环
+            for (const auto& floorInfo : floorInfos) {
+                if (
+                    posY <= floorInfo.height + 30 && // 当前 y 值处于地板或地板下方一帧的高度
+                    nextPosY > floorInfo.height && // 预测的 y 值低于地板高度
+                    nextPosX >= floorInfo.startX && nextPosX <= floorInfo.endX) {
+                    character->setY(floorInfo.height);
+                    character->setVelocity({character->getVelocity().x(), 0});
+                    character->setAcceleration({character->getAcceleration().x(), 0});
+                    break; // 找到一个匹配的地板后退出循环
+                }
             }
         }
     }
