@@ -12,7 +12,7 @@ class Battlefield: public Map {
 public:
     explicit Battlefield(QGraphicsItem *parent= nullptr);
 
-    qreal getFloorHeight() override;
+    FloorInfo getFloorInfo() override;
 };
 
 

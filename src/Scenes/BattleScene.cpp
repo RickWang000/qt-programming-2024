@@ -20,7 +20,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     map->scaleToFitScene(this);
     character->setPos(map->getSpawnPos());
     spareArmor->unmount();
-    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight());
+    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorInfo().height);
 }
 
 void BattleScene::processInput() {
@@ -94,17 +94,16 @@ void BattleScene::processMovement() {
         character->setOnGround(map->isOnFloor(character->pos()));
         character->setVelocity(character->getVelocity() + character->getAcceleration() * (double) deltaTime);
         character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
-        // 碰撞检测：如果人物的位置低于地面，调整人物的位置并重置速度和加速度
-        if (character->pos().y() > map->getFloorHeight()) {
-            character->setY(map->getFloorHeight());
+        
+        // 碰撞检测：如果人物的位置低于地面且位于地面内，调整人物的位置并重置速度和加速度
+        auto posY = character->pos().y();
+        auto posX = character->pos().x();
+        FloorInfo floorInfo = map->getFloorInfo();
 
-            QPointF newVelocity = character->getVelocity();
-            newVelocity.setY(0);
-            character->setVelocity(newVelocity);
-
-            QPointF newAcceleration = character->getAcceleration();
-            newAcceleration.setY(0);
-            character->setAcceleration(newAcceleration);
+        if (posY > floorInfo.height && posX >= floorInfo.startX && posX <= floorInfo.endX) {
+            character->setY(map->getFloorInfo().height);
+            character->setVelocity({character->getVelocity().x(), 0});
+            character->setAcceleration({character->getAcceleration().x(), 0});
         }
     }
 }

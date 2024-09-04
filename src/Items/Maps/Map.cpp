@@ -29,16 +29,21 @@ void Map::scaleToFitScene(QGraphicsScene *scene) {
 QPointF Map::getSpawnPos() {
     auto boundingRect = sceneBoundingRect();
     auto midX = (boundingRect.left() + boundingRect.right()) * 0.5;
-    return {midX, getFloorHeight()};
+    return {midX, getFloorInfo().height};
 }
 
-qreal Map::getFloorHeight() {
+FloorInfo Map::getFloorInfo() {
     auto sceneRect = sceneBoundingRect();
-    return sceneRect.top() + (sceneRect.top() - sceneRect.bottom()) * 0.5;
+    FloorInfo floorInfo;
+    floorInfo.startX = sceneRect.left();
+    floorInfo.endX = sceneRect.right();
+    floorInfo.height = sceneRect.top() + (sceneRect.bottom() - sceneRect.top()) * 0.5;
+    return floorInfo;
 }
 
 bool Map::isOnFloor(const QPointF &pos) {
-    qreal floorHeight = getFloorHeight();
+    auto floorInfo = getFloorInfo();
     qreal tolerance = 0.1; // 允许的误差范围
-    return std::abs(pos.y() - floorHeight) < tolerance;
+    return std::abs(pos.y() - floorInfo.height) < tolerance &&
+           pos.x() >= floorInfo.startX && pos.x() <= floorInfo.endX;
 }
