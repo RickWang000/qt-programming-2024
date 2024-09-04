@@ -4,13 +4,10 @@
 
 #include "Battlefield.h"
 
-Battlefield::Battlefield(QGraphicsItem *parent) : Map(parent, ":/Items/Maps/Battlefield/g9tOqth.png") {}
-
-FloorInfo Battlefield::getFloorInfo() {
+Battlefield::Battlefield(QGraphicsItem *parent) : Map(parent, ":/Items/Maps/Battlefield/g9tOqth.png") {
     auto sceneRect = sceneBoundingRect();
-    FloorInfo floorInfo;
-    floorInfo.startX = (sceneRect.left() + sceneRect.right()) * 0.06;
-    floorInfo.endX = (sceneRect.left() + sceneRect.right()) * 0.94;
-    floorInfo.height = (sceneRect.top() + sceneRect.bottom()) * 0.63;
-    return floorInfo;
+    auto absWidth = sceneRect.left() + sceneRect.right();
+    auto absHeight = sceneRect.top() + sceneRect.bottom();
+    addFloor(absWidth * 0.1, absWidth * 1.6, absHeight * 1.12);
+    addFloor(absWidth * 0.3, absWidth * 0.6, absHeight * 0.7);
 }

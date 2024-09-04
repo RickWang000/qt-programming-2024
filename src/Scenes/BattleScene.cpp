@@ -20,7 +20,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     map->scaleToFitScene(this);
     character->setPos(map->getSpawnPos());
     spareArmor->unmount();
-    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorInfo().height);
+    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorInfos().front().height);
 }
 
 void BattleScene::processInput() {
@@ -98,12 +98,18 @@ void BattleScene::processMovement() {
         // 碰撞检测：如果人物的位置低于地面且位于地面内，调整人物的位置并重置速度和加速度
         auto posY = character->pos().y();
         auto posX = character->pos().x();
-        FloorInfo floorInfo = map->getFloorInfo();
-
-        if (posY > floorInfo.height && posX >= floorInfo.startX && posX <= floorInfo.endX) {
-            character->setY(map->getFloorInfo().height);
-            character->setVelocity({character->getVelocity().x(), 0});
-            character->setAcceleration({character->getAcceleration().x(), 0});
+        auto floorInfos = map->getFloorInfos();
+        
+        qreal tolerance = 20; // 允许的误差范围
+        
+        for (const auto& floorInfo : floorInfos) {
+            if (posY > floorInfo.height && posY < floorInfo.height + tolerance &&
+                posX >= floorInfo.startX && posX <= floorInfo.endX) {
+                character->setY(floorInfo.height);
+                character->setVelocity({character->getVelocity().x(), 0});
+                character->setAcceleration({character->getAcceleration().x(), 0});
+                break; // 找到一个匹配的地板后退出循环
+            }
         }
     }
 }

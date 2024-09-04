@@ -21,11 +21,17 @@ public:
 
     void scaleToFitScene(QGraphicsScene *scene);
 
-    virtual FloorInfo getFloorInfo(); // Need to rewrite to support multiple platforms
+    virtual std::vector<FloorInfo> getFloorInfos(); // Need to rewrite to support multiple platforms
 
     virtual bool isOnFloor(const QPointF &pos);
 
     virtual QPointF getSpawnPos();
+
+protected:
+    void addFloor(qreal startX, qreal endX, qreal height);
+
+private:
+    std::vector<FloorInfo> floorInfos{};
 };
 
 

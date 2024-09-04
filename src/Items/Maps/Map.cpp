@@ -29,21 +29,30 @@ void Map::scaleToFitScene(QGraphicsScene *scene) {
 QPointF Map::getSpawnPos() {
     auto boundingRect = sceneBoundingRect();
     auto midX = (boundingRect.left() + boundingRect.right()) * 0.5;
-    return {midX, getFloorInfo().height};
+    return {midX, getFloorInfos().front().height};
 }
 
-FloorInfo Map::getFloorInfo() {
-    auto sceneRect = sceneBoundingRect();
+std::vector<FloorInfo> Map::getFloorInfos() {
+    return floorInfos;
+}
+
+void Map::addFloor(qreal startX, qreal endX, qreal height) {
     FloorInfo floorInfo;
-    floorInfo.startX = sceneRect.left();
-    floorInfo.endX = sceneRect.right();
-    floorInfo.height = sceneRect.top() + (sceneRect.bottom() - sceneRect.top()) * 0.5;
-    return floorInfo;
+    floorInfo.startX = startX;
+    floorInfo.endX = endX;
+    floorInfo.height = height;
+    floorInfos.push_back(floorInfo);
 }
 
 bool Map::isOnFloor(const QPointF &pos) {
-    auto floorInfo = getFloorInfo();
+    auto floorInfos = getFloorInfos();
     qreal tolerance = 0.1; // 允许的误差范围
-    return std::abs(pos.y() - floorInfo.height) < tolerance &&
-           pos.x() >= floorInfo.startX && pos.x() <= floorInfo.endX;
+
+    for (const auto &floorInfo : floorInfos){
+        if (std::abs(pos.y() - floorInfo.height) < tolerance &&
+            pos.x() >= floorInfo.startX && pos.x() <= floorInfo.endX){
+            return true;
+        }
+    }
+    return false;
 }
