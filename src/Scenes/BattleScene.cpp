@@ -94,6 +94,18 @@ void BattleScene::processMovement() {
         character->setOnGround(map->isOnFloor(character->pos()));
         character->setVelocity(character->getVelocity() + character->getAcceleration() * (double) deltaTime);
         character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
+        // 碰撞检测：如果人物的位置低于地面，调整人物的位置并重置速度和加速度
+        if (character->pos().y() > map->getFloorHeight()) {
+            character->setY(map->getFloorHeight());
+
+            QPointF newVelocity = character->getVelocity();
+            newVelocity.setY(0);
+            character->setVelocity(newVelocity);
+
+            QPointF newAcceleration = character->getAcceleration();
+            newAcceleration.setY(0);
+            character->setAcceleration(newAcceleration);
+        }
     }
 }
 
