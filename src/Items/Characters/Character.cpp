@@ -87,7 +87,7 @@ void Character::processInput() {
     }
     auto acceleration = QPointF(0, 0);
     if (isOnGround() && isJumpDown() && !lastJumpDown) {
-        acceleration.setY(-0.2);
+        acceleration.setY(-0.19);
         onGround = false;
     } else {
         acceleration.setY(0.01);

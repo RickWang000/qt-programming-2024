@@ -38,7 +38,7 @@ private:
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
 
     Map *map;
-    Character *character;
+    std::vector<Character*> characters;
     Armor *spareArmor;
 };
 
