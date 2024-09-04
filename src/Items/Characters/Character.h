@@ -22,30 +22,45 @@ public:
 
     void setRightDown(bool rightDown);
 
+    [[nodiscard]] bool isJumpDown() const;
+
+    void setJumpDown(bool jumpDown);
+
     [[nodiscard]] bool isPickDown() const;
 
     void setPickDown(bool pickDown);
 
     [[nodiscard]] const QPointF &getVelocity() const;
 
+    [[nodiscard]] const QPointF &getAcceleration() const;
+
     [[nodiscard]] bool isPicking() const;
 
     void setVelocity(const QPointF &velocity);
 
+    void setAcceleration(const QPointF &acceleration);
+
     void processInput();
 
     Armor* pickupArmor(Armor* newArmor);
+
+    [[nodiscard]] bool isOnGround() const;
+    
+    void setOnGround(bool onGround);
 
 protected:
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
     Armor *armor{};
     QPointF velocity{};
+    QPointF acceleration{};
+    
 //    QGraphicsEllipseItem *ellipseItem; // for debugging
 private:
-    bool leftDown{}, rightDown{}, pickDown{};
+    bool leftDown{}, rightDown{}, jumpDown{}, pickDown{};
     bool lastPickDown{};
     bool picking{};
+    bool onGround{};
 };
 
 

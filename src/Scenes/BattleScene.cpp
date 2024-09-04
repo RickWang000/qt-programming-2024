@@ -42,6 +42,11 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
                 character->setRightDown(true);
             }
             break;
+        case Qt::Key_K:
+            if (character != nullptr) {
+                character->setJumpDown(true);
+            }
+            break;
         case Qt::Key_J:
             if (character != nullptr) {
                 character->setPickDown(true);
@@ -64,6 +69,11 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
                 character->setRightDown(false);
             }
             break;
+        case Qt::Key_K:
+            if (character != nullptr) {
+                character->setJumpDown(false);
+            }
+            break;
         case Qt::Key_J:
             if (character != nullptr) {
                 character->setPickDown(false);
@@ -81,6 +91,8 @@ void BattleScene::update() {
 void BattleScene::processMovement() {
     Scene::processMovement();
     if (character != nullptr) {
+        character->setOnGround(map->isOnFloor(character->pos()));
+        character->setVelocity(character->getVelocity() + character->getAcceleration() * (double) deltaTime);
         character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
     }
 }

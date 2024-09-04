@@ -28,6 +28,14 @@ void Character::setRightDown(bool rightDown) {
     Character::rightDown = rightDown;
 }
 
+bool Character::isJumpDown() const {
+    return jumpDown;
+}
+
+void Character::setJumpDown(bool jumpDown) {
+    Character::jumpDown = jumpDown;
+}
+
 bool Character::isPickDown() const {
     return pickDown;
 }
@@ -40,22 +48,57 @@ const QPointF &Character::getVelocity() const {
     return velocity;
 }
 
+const QPointF &Character::getAcceleration() const {
+    return acceleration;
+}
+
 void Character::setVelocity(const QPointF &velocity) {
     Character::velocity = velocity;
 }
 
+void Character::setAcceleration(const QPointF &acceleration) {
+    Character::acceleration = acceleration;
+}
+
+bool Character::isOnGround() const {
+    return onGround;
+}
+
+void Character::setOnGround(bool onGround) {
+    Character::onGround = onGround;
+}
+
 void Character::processInput() {
-    auto velocity = QPointF(0, 0);
+    auto velocity = getVelocity();
     const auto moveSpeed = 0.3;
+    bool moving = false;
     if (isLeftDown()) {
-        velocity.setX(velocity.x() - moveSpeed);
+        velocity.setX( - moveSpeed);
         setTransform(QTransform().scale(1, 1));
-    }
+        moving = true;
+    } 
     if (isRightDown()) {
-        velocity.setX(velocity.x() + moveSpeed);
+        velocity.setX( + moveSpeed);
         setTransform(QTransform().scale(-1, 1));
+        moving = true;
+    } 
+    if (!moving) {
+        velocity.setX(0);
+    }
+    auto acceleration = QPointF(0, 0);
+    if (isOnGround()) {
+        if (isJumpDown()) {
+            acceleration.setY(-0.05);
+            onGround = false;
+        } else {
+            velocity.setY(0);
+            acceleration.setY(0);
+        }
+    } else {
+        acceleration.setY(0.004);
     }
     setVelocity(velocity);
+    setAcceleration(acceleration);
 
     if (!lastPickDown && pickDown) { // first time pickDown
         picking = true;

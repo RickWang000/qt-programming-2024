@@ -36,3 +36,9 @@ qreal Map::getFloorHeight() {
     auto sceneRect = sceneBoundingRect();
     return sceneRect.top() + (sceneRect.top() - sceneRect.bottom()) * 0.5;
 }
+
+bool Map::isOnFloor(const QPointF &pos) {
+    qreal floorHeight = getFloorHeight();
+    qreal tolerance = 0.1; // 允许的误差范围
+    return std::abs(pos.y() - floorHeight) < tolerance;
+}

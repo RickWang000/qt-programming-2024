@@ -17,6 +17,8 @@ public:
 
     virtual qreal getFloorHeight(); // Need to rewrite to support multiple platforms
 
+    virtual bool isOnFloor(const QPointF &pos);
+
     virtual QPointF getSpawnPos();
 };
 
