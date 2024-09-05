@@ -8,27 +8,55 @@
 #include "../Items/Characters/Link.h"
 #include "../Items/Maps/Battlefield.h"
 #include "../Items/Maps/Platform.h"
+
+// Armor 类
 #include "../Items/Armors/OldShirt.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
+
+// Arrow 类
+#include "../Items/Arrows/FireArrow.h"
+#include "../Items/Arrows/IceArrow.h"
+#include "../Items/Arrows/ShockArrow.h"
+#include "../Items/Arrows/WoodArrow.h"
+
+// Bow 类
+#include "../Items/Bows/ForestDwellersBow.h"
+#include "../Items/Bows/PhrenicBow.h"
+#include "../Items/Bows/SavageLynelBow.h"
+
+// HeadEquipment 类
 #include "../Items/HeadEquipments/CapOfTheHero.h"
+#include "../Items/HeadEquipments/FlamebreakerHelm.h"
+#include "../Items/HeadEquipments/ThunderHelm.h"
+#include "../Items/HeadEquipments/ZantsHelmet.h"
+
+// LegEquipment 类
 #include "../Items/LegEquipments/WellWornTrousers.h"
+
+// MeleeWeapon 类
+#include "../Items/MeleeWeapons/LongSwords/GreatThunderBlade.h"
+#include "../Items/MeleeWeapons/Spears/FrostSpear.h"
+#include "../Items/MeleeWeapons/Swords/FlameBlade.h"
+#include "../Items/MeleeWeapons/Swords/ForestDwellersSword.h"
 #include "../Items/MeleeWeapons/Swords/MasterSword.h"
+
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     // This is useful if you want the scene to have the exact same dimensions as the view
     setSceneRect(0, 0, 1280, 720);
     std::srand(std::time(nullptr));
+
     maps.push_back(new Battlefield());
     maps.push_back(new Platform(nullptr, MaterialType::Wood,1));
     maps.push_back(new Platform(nullptr, MaterialType::Stone,2));
     maps.push_back(new Platform(nullptr, MaterialType::Metal,3));
-    
-    characters.push_back(new Link()); // 第一个角色
-    characters.push_back(new Link()); // 第二个角色
     for (auto map : maps) {
         addItem(map);
         map->scaleToFitScene(this);
     }
+
+    characters.push_back(new Link()); // 第一个角色
+    characters.push_back(new Link()); // 第二个角色
     for (auto character : characters) {
         addItem(character);
     }
@@ -150,6 +178,8 @@ void BattleScene::update() {
     spawnHeadEquipment();
     spawnLegEquipment();
     spawnMeleeWeapon();
+    spawnBow();
+    spawnArrow();
 
     checkGameOver();
 }
@@ -191,6 +221,20 @@ void BattleScene::processMovement() {
             if (meleeWeapon != nullptr){
                 meleeWeapon->updateMove(deltaTime);
                 checkCollision(meleeWeapon, map);
+            }
+        }
+
+        for (auto bow : bows){
+            if (bow != nullptr){
+                bow->updateMove(deltaTime);
+                checkCollision(bow, map);
+            }
+        }
+
+        for (auto arrow : arrows){
+            if (arrow != nullptr){
+                arrow->updateMove(deltaTime);
+                checkCollision(arrow, map);
             }
         }
     }
@@ -241,6 +285,12 @@ void BattleScene::processPicking() {
                 else if (auto pickedMeleeWeapon = dynamic_cast<MeleeWeapon *>(pickupMountable(character, mountable))){ // 如果拾取的物品是近战武器
                     meleeWeapons.push_back(pickedMeleeWeapon); // 将拾取的近战武器添加到meleeWeapons向量中
                 }
+                else if (auto pickedBow = dynamic_cast<Bow *>(pickupMountable(character, mountable))){ // 如果拾取的物品是弓
+                    bows.push_back(pickedBow); // 将拾取的弓添加到bows向量中
+                }
+                else if (auto pickedArrow = dynamic_cast<Arrow *>(pickupMountable(character, mountable))){ // 如果拾取的物品是箭
+                    arrows.push_back(pickedArrow); // 将拾取的箭添加到arrows向量中
+                }
             }
         }
     }
@@ -275,6 +325,10 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
         return character->pickupLegEquipment(legEquipment);
     } else if (auto meleeWeapon = dynamic_cast<MeleeWeapon *>(mountable)) {
         return character->pickupMeleeWeapon(meleeWeapon);
+    } else if (auto bow = dynamic_cast<Bow *>(mountable)) {
+        return character->pickupBow(bow);
+    } else if (auto arrow = dynamic_cast<Arrow *>(mountable)) {
+        return character->pickupArrow(arrow);
     }
     return nullptr;
 }
@@ -302,8 +356,8 @@ void BattleScene::checkGameOver() {
 template <typename T>
 void BattleScene::spawnMountable(std::vector<std::pair<T*, double>> itemList, std::vector<Map*> maps, std::vector<T*>& itemContainer) {
     // 生成一个随机数来决定是否生成物品
-    if (std::rand() % 1000 != 0) {
-        return; // 只有1/1000的概率继续执行
+    if (std::rand() % 5000 != 0) {
+        return; // 只有1/10000的概率继续执行
     }
 
     // 计算总概率
@@ -346,8 +400,10 @@ void BattleScene::spawnArmor() {
 
 void BattleScene::spawnHeadEquipment() {
     std::vector<std::pair<HeadEquipment*, double>> headEquipmentList = {
-        {new CapOfTheHero(), 0.5}
-        // 添加其他头部装备
+        {new CapOfTheHero(), 0.5},
+        {new FlamebreakerHelm(), 0.25},
+        {new ThunderHelm(), 0.125},
+        {new ZantsHelmet(), 0.125}
     };
     spawnMountable(headEquipmentList, maps, headEquipments);
 }
@@ -355,15 +411,36 @@ void BattleScene::spawnHeadEquipment() {
 void BattleScene::spawnLegEquipment() {
     std::vector<std::pair<LegEquipment*, double>> legEquipmentList = {
         {new WellWornTrousers(), 0.5}
-        // 添加其他腿部装备
     };
     spawnMountable(legEquipmentList, maps, legEquipments);
 }
 
 void BattleScene::spawnMeleeWeapon() {
     std::vector<std::pair<MeleeWeapon*, double>> meleeWeaponList = {
-        {new MasterSword(), 0.5}
-        // 添加其他近战武器
+        {new MasterSword(), 0.5},
+        {new FlameBlade(), 0.25},
+        {new ForestDwellersSword(), 0.125},
+        {new GreatThunderBlade(), 0.0625},
+        {new FrostSpear(), 0.0625}
     };
     spawnMountable(meleeWeaponList, maps, meleeWeapons);
+}
+
+void BattleScene::spawnBow() {
+    std::vector<std::pair<Bow*, double>> bowList = {
+        {new ForestDwellersBow(), 0.5},
+        {new PhrenicBow(), 0.25},
+        {new SavageLynelBow(), 0.25}
+    };
+    spawnMountable(bowList, maps, bows);
+}
+
+void BattleScene::spawnArrow() {
+    std::vector<std::pair<Arrow*, double>> arrowList = {
+        {new FireArrow(), 0.25},
+        {new IceArrow(), 0.25},
+        {new ShockArrow(), 0.25},
+        {new WoodArrow(), 0.25}
+    };
+    spawnMountable(arrowList, maps, arrows);
 }

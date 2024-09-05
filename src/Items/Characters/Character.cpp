@@ -142,6 +142,24 @@ MeleeWeapon *Character::pickupMeleeWeapon(MeleeWeapon *newMeleeWeapon) {
     return oldMeleeWeapon;
 }
 
+Bow *Character::pickupBow(Bow *newBow) {
+    auto oldBow = bow;
+    if (oldBow != nullptr) {
+        oldBow->unmount();
+        oldBow->setPos(newBow->pos());
+        oldBow->setParentItem(parentItem());
+    }
+    newBow->setParentItem(this);
+    newBow->mountToParent();
+    bow = newBow;
+    return oldBow;
+}
+
+Arrow *Character::pickupArrow(Arrow *newArrow) {
+    newArrow->setParentItem(this);
+    arrows.push_back(newArrow);
+    return newArrow;
+}
 // 获取生命值
 int Character::getHealth() const { return health; }
 

@@ -49,6 +49,8 @@ private:
     void spawnHeadEquipment();
     void spawnLegEquipment();
     void spawnMeleeWeapon();
+    void spawnBow();
+    void spawnArrow();
 
     std::vector<Map*> maps;
     std::vector<Character*> characters;
@@ -56,6 +58,8 @@ private:
     std::vector<HeadEquipment*> headEquipments;
     std::vector<LegEquipment*> legEquipments;
     std::vector<MeleeWeapon*> meleeWeapons;
+    std::vector<Bow*> bows;
+    std::vector<Arrow*> arrows;
     
 };
 

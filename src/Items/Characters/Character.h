@@ -11,6 +11,8 @@
 #include "../LegEquipments/LegEquipment.h"
 #include "../Physical.h"
 #include "../MeleeWeapons/MeleeWeapon.h"
+#include "../Bows/Bow.h"
+#include "../Arrows/Arrow.h"
 
 class Character : public Item , public Physical {
 public:
@@ -18,18 +20,15 @@ public:
 
     // 按键相关方法
     [[nodiscard]] bool isLeftDown() const;
-    void setLeftDown(bool leftDown);
-
     [[nodiscard]] bool isRightDown() const;
-    void setRightDown(bool rightDown);
-
     [[nodiscard]] bool isJumpDown() const;
-    void setJumpDown(bool jumpDown);
-
     [[nodiscard]] bool isPickDown() const;
-    void setPickDown(bool pickDown);
-
     [[nodiscard]] bool isPicking() const;
+
+    void setLeftDown(bool leftDown);
+    void setRightDown(bool rightDown);
+    void setJumpDown(bool jumpDown);
+    void setPickDown(bool pickDown);
 
     void processInput();
 
@@ -39,17 +38,8 @@ public:
     HeadEquipment* pickupHeadEquipment(HeadEquipment* newHeadEquipment);
     LegEquipment* pickupLegEquipment(LegEquipment* newLegEquipment);
     MeleeWeapon* pickupMeleeWeapon(MeleeWeapon* newMeleeWeapon);
-
-    
-    // 运动相关方法
-    // [[nodiscard]] const QPointF &getVelocity() const;
-    // void setVelocity(const QPointF &velocity);
-
-    // [[nodiscard]] const QPointF &getAcceleration() const;
-    // void setAcceleration(const QPointF &acceleration);
-
-    // [[nodiscard]] bool isOnGround() const;
-    // void setOnGround(bool onGround);
+    Bow* pickupBow(Bow* newBow);
+    Arrow* pickupArrow(Arrow* newArrow);
 
     void updateMove(double deltaTime) override;
 
@@ -61,12 +51,13 @@ public:
     void updateHealthDisplay();
 
 protected:
+    Armor *armor{};
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
-    Armor *armor{};
     MeleeWeapon *meleeWeapon{};
-    // QPointF velocity{};
-    // QPointF acceleration{};
+    Bow *bow{};
+    std::vector<Arrow*> arrows{};
+
     int health{100}; // 初始生命值为100
     QGraphicsTextItem* healthText{}; // 用于显示生命值
     QGraphicsRectItem* healthBar{}; // 用于显示生命值的血条
@@ -76,7 +67,6 @@ private:
     bool leftDown{}, rightDown{}, jumpDown{}, pickDown{};
     bool lastPickDown{}, lastJumpDown{};
     bool picking{};
-    // bool onGround{};
 };
 
 

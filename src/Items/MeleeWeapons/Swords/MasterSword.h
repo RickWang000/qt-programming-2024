@@ -1,5 +1,5 @@
-#ifndef QT_PROGRAMMING_2024_MASTER_SWORD_H
-#define QT_PROGRAMMING_2024_MASTER_SWORD_H
+#ifndef QT_PROGRAMMING_2024_MASTERSWORD_H
+#define QT_PROGRAMMING_2024_MASTERSWORD_H
 
 #include "Sword.h"
 
@@ -8,4 +8,4 @@ public:
     explicit MasterSword(QGraphicsItem *parent = nullptr);
 };
 
-#endif //QT_PROGRAMMING_2024_MASTER_SWORD_H
+#endif //QT_PROGRAMMING_2024_MASTERSWORD_H
