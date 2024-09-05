@@ -1,30 +1,28 @@
-//
-// Created by gerw on 8/20/24.
-//
+#include "MeleeWeapon.h"
 
-#include "HeadEquipment.h"
+MeleeWeapon::MeleeWeapon(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {
 
-HeadEquipment::HeadEquipment(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {
 }
 
-void HeadEquipment::mountToParent() {
+
+void MeleeWeapon::mountToParent() {
     Mountable::mountToParent();
-    setScale(0.4);
-    setPos(-30, -210);
+    setScale(0.8);
+    setPos(-59, -176);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, 0);
     }
 }
 
-void HeadEquipment::unmount() {
+void MeleeWeapon::unmount() {
     Mountable::unmount();
-    setScale(0.6);
+    setScale(0.8);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, -120);
     }
 }
 
-void HeadEquipment::updateMove(double deltaTime) {
+void MeleeWeapon::updateMove(double deltaTime) {
     if (!isMounted()) {
         setAcceleration(QPointF(0, GRAVITY));
         setVelocity(getVelocity() + getAcceleration() * deltaTime);

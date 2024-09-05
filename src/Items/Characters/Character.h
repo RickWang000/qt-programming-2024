@@ -10,6 +10,7 @@
 #include "../Armors/Armor.h"
 #include "../LegEquipments/LegEquipment.h"
 #include "../Physical.h"
+#include "../MeleeWeapons/MeleeWeapon.h"
 
 class Character : public Item , public Physical {
 public:
@@ -37,6 +38,7 @@ public:
     Armor* pickupArmor(Armor* newArmor);
     HeadEquipment* pickupHeadEquipment(HeadEquipment* newHeadEquipment);
     LegEquipment* pickupLegEquipment(LegEquipment* newLegEquipment);
+    MeleeWeapon* pickupMeleeWeapon(MeleeWeapon* newMeleeWeapon);
 
     
     // 运动相关方法
@@ -62,6 +64,7 @@ protected:
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
     Armor *armor{};
+    MeleeWeapon *meleeWeapon{};
     // QPointF velocity{};
     // QPointF acceleration{};
     int health{100}; // 初始生命值为100

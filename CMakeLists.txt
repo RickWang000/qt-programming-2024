@@ -13,7 +13,8 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(qt_programming_2024 src/main.cpp
+add_executable(
+        qt_programming_2024 src/main.cpp
         src/MyGame.cpp
         src/MyGame.h
         src/Items/Item.cpp
@@ -50,7 +51,14 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Mountable.cpp
         src/Items/Mountable.h
         src/Items/Armors/FlamebreakerArmor.cpp
-        src/Items/Armors/FlamebreakerArmor.h)
+        src/Items/Armors/FlamebreakerArmor.h
+        src/Items/MeleeWeapons/MeleeWeapon.cpp
+        src/Items/MeleeWeapons/MeleeWeapon.h
+        src/Items/MeleeWeapons/Swords/Sword.cpp
+        src/Items/MeleeWeapons/Swords/Sword.h
+        src/Items/MeleeWeapons/Swords/MasterSword.cpp
+        src/Items/MeleeWeapons/Swords/MasterSword.h
+)
 target_link_libraries(qt_programming_2024
         Qt::Core
         Qt::Gui

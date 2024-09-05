@@ -129,6 +129,19 @@ LegEquipment *Character::pickupLegEquipment(LegEquipment *newLegEquipment) {
     return oldLegEquipment;
 }
 
+MeleeWeapon *Character::pickupMeleeWeapon(MeleeWeapon *newMeleeWeapon) {
+    auto oldMeleeWeapon = meleeWeapon;
+    if (oldMeleeWeapon != nullptr) {
+        oldMeleeWeapon->unmount();
+        oldMeleeWeapon->setPos(newMeleeWeapon->pos());
+        oldMeleeWeapon->setParentItem(parentItem());
+    }
+    newMeleeWeapon->setParentItem(this);
+    newMeleeWeapon->mountToParent();
+    meleeWeapon = newMeleeWeapon;
+    return oldMeleeWeapon;
+}
+
 // 获取生命值
 int Character::getHealth() const { return health; }
 

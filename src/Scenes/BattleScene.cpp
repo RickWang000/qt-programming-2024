@@ -12,6 +12,7 @@
 #include "../Items/Armors/FlamebreakerArmor.h"
 #include "../Items/HeadEquipments/CapOfTheHero.h"
 #include "../Items/LegEquipments/WellWornTrousers.h"
+#include "../Items/MeleeWeapons/Swords/MasterSword.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     // This is useful if you want the scene to have the exact same dimensions as the view
@@ -148,6 +149,7 @@ void BattleScene::update() {
     spawnArmor();
     spawnHeadEquipment();
     spawnLegEquipment();
+    spawnMeleeWeapon();
 
     checkGameOver();
 }
@@ -182,6 +184,13 @@ void BattleScene::processMovement() {
             if (legEquipment != nullptr){
                 legEquipment->updateMove(deltaTime);
                 checkCollision(legEquipment, map);
+            }
+        }
+
+        for (auto meleeWeapon : meleeWeapons){
+            if (meleeWeapon != nullptr){
+                meleeWeapon->updateMove(deltaTime);
+                checkCollision(meleeWeapon, map);
             }
         }
     }
@@ -229,6 +238,9 @@ void BattleScene::processPicking() {
                 else if (auto pickedArmor = dynamic_cast<Armor *>(pickupMountable(character, mountable))){ // 如果拾取的物品是盔甲
                     armors.push_back(pickedArmor); // 将拾取的盔甲添加到armors向量中
                 }
+                else if (auto pickedMeleeWeapon = dynamic_cast<MeleeWeapon *>(pickupMountable(character, mountable))){ // 如果拾取的物品是近战武器
+                    meleeWeapons.push_back(pickedMeleeWeapon); // 将拾取的近战武器添加到meleeWeapons向量中
+                }
             }
         }
     }
@@ -261,6 +273,8 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
         return character->pickupHeadEquipment(headEquipment);
     } else if (auto legEquipment = dynamic_cast<LegEquipment *>(mountable)) {
         return character->pickupLegEquipment(legEquipment);
+    } else if (auto meleeWeapon = dynamic_cast<MeleeWeapon *>(mountable)) {
+        return character->pickupMeleeWeapon(meleeWeapon);
     }
     return nullptr;
 }
@@ -344,4 +358,12 @@ void BattleScene::spawnLegEquipment() {
         // 添加其他腿部装备
     };
     spawnMountable(legEquipmentList, maps, legEquipments);
+}
+
+void BattleScene::spawnMeleeWeapon() {
+    std::vector<std::pair<MeleeWeapon*, double>> meleeWeaponList = {
+        {new MasterSword(), 0.5}
+        // 添加其他近战武器
+    };
+    spawnMountable(meleeWeaponList, maps, meleeWeapons);
 }

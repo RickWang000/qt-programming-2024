@@ -1,9 +1,30 @@
 <RCC>
     <qresource prefix="/">
-        <file>Items/Armors/OldShirt/BotW_Old_Shirt_Icon.png</file>
-        <file>Items/Armors/FlamebreakerArmor/BotW_Flamebreaker_Armor_Icon.png</file>
-        <file>Items/HeadEquipments/CapOfTheHero/BotW_Cap_of_the_Hero_Icon.png</file>
-        <file>Items/LegEquipments/WellWornTrousers/BotW_Well-Worn_Trousers_Icon.png</file>
+        <file>Items/Armors/OldShirt/OldShirt.png</file>
+        <file>Items/Armors/FlamebreakerArmor/FlamebreakerArmor.png</file>
+
+        <file>Items/HeadEquipments/CapOfTheHero/CapOfTheHero.png</file>
+        <file>Items/HeadEquipments/FlamebreakerHelm/FlamebreakerHelm.png</file>
+        <file>Items/HeadEquipments/ThunderHelm/ThunderHelm.png</file>
+        <file>Items/HeadEquipments/ZantsHelmet/ZantsHelmet.png</file>
+
+        <file>Items/LegEquipments/WellWornTrousers/WellWornTrousers.png</file>
+        
+        <file>Items/MeleeWeapons/LongSwords/GreatThunderBlade/GreatThunderBlade.png</file>
+        <file>Items/MeleeWeapons/Spears/FrostSpear/FrostSpear.png</file>
+        <file>Items/MeleeWeapons/Swords/FlameBlade/FlameBlade.png</file>
+        <file>Items/MeleeWeapons/Swords/ForestDwellersSword/ForestDwellersSword.png</file>
+        <file>Items/MeleeWeapons/Swords/MasterSword/MasterSword.png</file>
+        
+        <file>Items/Bows/ForestDwellersBow/ForestDwellersBow.png</file>
+        <file>Items/Bows/PhrenicBow/PhrenicBow.png</file>
+        <file>Items/Bows/SavageLynelBow/SavageLynelBow.png</file>
+        
+        <file>Items/Arrows/FireArrow/FireArrow.png</file>
+        <file>Items/Arrows/IceArrow/IceArrow.png</file>
+        <file>Items/Arrows/ShockArrow/ShockArrow.png</file>
+        <file>Items/Arrows/WoodArrow/WoodArrow.png</file>
+        
         <file>Items/Maps/Battlefield/g9tOqth.png</file>
         <file>Items/Maps/Platform/Wood.png</file>
         <file>Items/Maps/Platform/Metal.png</file>

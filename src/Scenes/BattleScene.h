@@ -48,12 +48,14 @@ private:
     void spawnArmor();
     void spawnHeadEquipment();
     void spawnLegEquipment();
+    void spawnMeleeWeapon();
 
     std::vector<Map*> maps;
     std::vector<Character*> characters;
     std::vector<Armor*> armors;
     std::vector<HeadEquipment*> headEquipments;
     std::vector<LegEquipment*> legEquipments;
+    std::vector<MeleeWeapon*> meleeWeapons;
     
 };
 
