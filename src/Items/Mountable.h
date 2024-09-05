@@ -16,11 +16,11 @@ public:
     virtual void unmount();
     [[nodiscard]] bool isMounted() const;
 
-    QDateTime getSpawnTime() const;
+    QDateTime getLastUnmountTime() const;
 
 private:
     bool mounted{};
-    QDateTime spawnTime; 
+    QDateTime lastUnmountTime{};
 };
 
 

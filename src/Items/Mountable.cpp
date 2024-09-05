@@ -5,11 +5,12 @@
 #include "Mountable.h"
 
 Mountable::Mountable() {
-    spawnTime = QDateTime::currentDateTime(); // 初始化生成时间
+    lastUnmountTime = QDateTime::currentDateTime(); // 初始化生成时间
 }
 
 void Mountable::unmount() {
     mounted = false;
+    lastUnmountTime = QDateTime::currentDateTime(); // 更新 lastUnmountTime
 }
 
 bool Mountable::isMounted() const {
@@ -20,6 +21,6 @@ void Mountable::mountToParent() {
     mounted = true;
 }
 
-QDateTime Mountable::getSpawnTime() const {
-    return spawnTime;
+QDateTime Mountable::getLastUnmountTime() const {
+    return lastUnmountTime;
 }

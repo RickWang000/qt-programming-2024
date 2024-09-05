@@ -466,7 +466,7 @@ void BattleScene::checkExpiredMountables() {
 
     auto checkAndRemove = [&](auto& container) {
         container.erase(std::remove_if(container.begin(), container.end(), [&](auto item) {
-            if (item && !item->isMounted() && item->getSpawnTime().secsTo(now) > 5) {
+            if (item && !item->isMounted() && item->getLastUnmountTime().secsTo(now) > 10) { // 如果物品未被拾取时间超过10秒
                 removeItem(item);
                 delete item;
                 item = nullptr; // 将指针置为nullptr
