@@ -5,6 +5,11 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <algorithm>
+#include <QLineEdit>
+#include <QVBoxLayout>
+#include <QMap>
+#include <functional>
+
 #include "BattleScene.h"
 #include "../Items/Characters/Link.h"
 #include "../Items/Maps/Battlefield.h"
@@ -63,6 +68,15 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     }
     characters[0]->setPos(maps[0]->getSpawnPos());
     characters[1]->setPos(maps[0]->getSpawnPos() + QPointF(50, 0)); // 第二个角色的位置稍微偏移
+
+    // 创建QLineEdit用于输入作弊码
+    cheatCodeInput = new QLineEdit();
+    cheatCodeInput->setPlaceholderText("Enter cheat code");
+    connect(cheatCodeInput, &QLineEdit::returnPressed, this, &BattleScene::handleCheatCode);
+
+    // 将QLineEdit添加到场景中
+    QGraphicsProxyWidget *proxy = addWidget(cheatCodeInput);
+    proxy->setPos(10, 10); // 设置位置
 }
 
 void BattleScene::processInput() {
@@ -468,4 +482,42 @@ void BattleScene::checkExpiredMountables() {
     checkAndRemove(meleeWeapons);
     checkAndRemove(bows);
     checkAndRemove(arrows);
+}
+
+void BattleScene::handleCheatCode() {
+    QString cheatCode = cheatCodeInput->text().toLower(); // 将输入转换为小写
+    QPointF spawnPos(sceneRect().center().x(), sceneRect().top()); // 设置生成位置为屏幕顶部的中间
+
+    // 定义一个映射，将作弊码映射到生成物体的函数
+    static const QMap<QString, std::function<void()>> cheatCodeMap = {
+        {"11", [this, spawnPos]() { auto item = new OldShirt(); item->setPos(spawnPos); armors.push_back(item); addItem(item); }},
+        {"12", [this, spawnPos]() { auto item = new FlamebreakerArmor(); item->setPos(spawnPos); armors.push_back(item); addItem(item); }},
+        {"21", [this, spawnPos]() { auto item = new CapOfTheHero(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},
+        {"22", [this, spawnPos]() { auto item = new FlamebreakerHelm(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},
+        {"23", [this, spawnPos]() { auto item = new ThunderHelm(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},
+        {"24", [this, spawnPos]() { auto item = new ZantsHelmet(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},
+        {"31", [this, spawnPos]() { auto item = new WellWornTrousers(); item->setPos(spawnPos); legEquipments.push_back(item); addItem(item); }},
+        {"41", [this, spawnPos]() { auto item = new MasterSword(); item->setPos(spawnPos); meleeWeapons.push_back(item); addItem(item); }},
+        {"42", [this, spawnPos]() { auto item = new FlameBlade(); item->setPos(spawnPos); meleeWeapons.push_back(item); addItem(item); }},
+        {"43", [this, spawnPos]() { auto item = new ForestDwellersSword(); item->setPos(spawnPos); meleeWeapons.push_back(item); addItem(item); }},
+        {"44", [this, spawnPos]() { auto item = new GreatThunderBlade(); item->setPos(spawnPos); meleeWeapons.push_back(item); addItem(item); }},
+        {"45", [this, spawnPos]() { auto item = new FrostSpear(); item->setPos(spawnPos); meleeWeapons.push_back(item); addItem(item); }},
+        {"51", [this, spawnPos]() { auto item = new ForestDwellersBow(); item->setPos(spawnPos); bows.push_back(item); addItem(item); }},
+        {"52", [this, spawnPos]() { auto item = new PhrenicBow(); item->setPos(spawnPos); bows.push_back(item); addItem(item); }},
+        {"53", [this, spawnPos]() { auto item = new SavageLynelBow(); item->setPos(spawnPos); bows.push_back(item); addItem(item); }},
+        {"61", [this, spawnPos]() { auto item = new FireArrow(); item->setPos(spawnPos); arrows.push_back(item); addItem(item); }},
+        {"62", [this, spawnPos]() { auto item = new IceArrow(); item->setPos(spawnPos); arrows.push_back(item); addItem(item); }},
+        {"63", [this, spawnPos]() { auto item = new ShockArrow(); item->setPos(spawnPos); arrows.push_back(item); addItem(item); }},
+        {"64", [this, spawnPos]() { auto item = new WoodArrow(); item->setPos(spawnPos); arrows.push_back(item); addItem(item); }}
+    };
+
+    // 查找并执行对应的生成函数
+    auto it = cheatCodeMap.find(cheatCode);
+    if (it != cheatCodeMap.end()) {
+        it.value()();
+    } else {
+        qDebug() << "Unknown cheat code:" << cheatCode;
+    }
+
+    cheatCodeInput->clear(); // 清空输入框
 }

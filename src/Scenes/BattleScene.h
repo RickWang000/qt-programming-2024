@@ -6,6 +6,8 @@
 #define QT_PROGRAMMING_2024_BATTLESCENE_H
 
 #include <QKeyEvent>
+#include <QLineEdit>
+#include <QGraphicsProxyWidget>
 #include "Scene.h"
 #include "../Items/Maps/Map.h"
 #include "../Items/Characters/Character.h"
@@ -32,6 +34,8 @@ public:
 protected slots:
 
     void update() override;
+    void handleCheatCode(); // 声明处理作弊码的槽函数
+    
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -61,6 +65,8 @@ private:
     std::vector<MeleeWeapon*> meleeWeapons;
     std::vector<Bow*> bows;
     std::vector<Arrow*> arrows;
+
+    QLineEdit *cheatCodeInput; // 添加一个QLineEdit用于输入作弊码
     
 };
 
