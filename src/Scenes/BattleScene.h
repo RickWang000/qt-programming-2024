@@ -39,6 +39,8 @@ private:
 
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
 
+    void checkGameOver();
+
     std::vector<Map*> maps;
     std::vector<Character*> characters;
     Armor *spareArmor;

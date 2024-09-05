@@ -88,7 +88,8 @@ void Character::processInput() {
     }
     auto acceleration = QPointF(0, 0);
     if (isOnGround() && isJumpDown() && !lastJumpDown) {
-        acceleration.setY(-0.015);
+        takeDamage(30);
+        acceleration.setY(-0.012);
         onGround = false;
     } else {
         acceleration.setY(0.001);
@@ -159,4 +160,5 @@ void Character::initHealthDisplay() {
 void Character::updateHealthDisplay() {
     healthBar->setRect(0, 0, health, 15);
     healthText->setPlainText(QString("%1").arg(health));
+    qDebug() << "Health: " << health;
 }

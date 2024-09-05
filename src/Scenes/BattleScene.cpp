@@ -3,6 +3,7 @@
 //
 
 #include <QDebug>
+#include <QMessageBox>
 #include "BattleScene.h"
 #include "../Items/Characters/Link.h"
 #include "../Items/Maps/Battlefield.h"
@@ -143,6 +144,12 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
 
 void BattleScene::update() {
     Scene::update();
+    for (auto character : characters) {
+        if (character != nullptr) {
+            character->updateHealthDisplay();
+        }
+    }
+    checkGameOver();
 }
 void BattleScene::processMovement() {
     Scene::processMovement();
@@ -224,23 +231,16 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
     return nullptr;
 }
 
-// void BattleScene::updateHealthDisplay() {
-//     for (auto character : characters) {
-//         if (character != nullptr) {
-//             // 更新生命值显示逻辑
-//             // 例如：在屏幕上显示角色的生命值
-//             int health = character->getHealth();
-//             // 显示生命值的代码
-//         }
-//     }
-// }
 
-// void BattleScene::checkGameOver() {
-//     for (auto character : characters) {
-//         if (character != nullptr && character->getHealth() <= 0) {
-//             // 游戏结束逻辑
-//             // 例如：显示胜利者
-//             // 判定另一方胜利
-//         }
-//     }
-// }
+void BattleScene::checkGameOver() {
+    for (auto character : characters) {
+        if (character != nullptr && character->getHealth() <= 0) {
+            // 游戏结束逻辑
+            QString winner = (character == characters[0]) ? "Player 1" : "Player 2";
+            QMessageBox::information(nullptr, "Game Over", "Game Over! Winner is " + winner);
+            // 停止游戏，销毁场景
+            clear();
+            break;
+        }
+    }
+}
