@@ -8,12 +8,17 @@
 
 #include "../Item.h"
 #include "../Mountable.h"
+#include "../Physical.h"
 
-class LegEquipment: public Item, public Mountable {
+class LegEquipment: public Item, public Mountable, public Physical {
 public:
     explicit LegEquipment(QGraphicsItem *parent, const QString &pixmapPath);
 
     void mountToParent() override;
+
+    void unmount() override;
+
+    void updateMove(double deltaTime) override;
 };
 
 

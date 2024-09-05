@@ -35,6 +35,8 @@ public:
 
     // 装备相关方法
     Armor* pickupArmor(Armor* newArmor);
+    HeadEquipment* pickupHeadEquipment(HeadEquipment* newHeadEquipment);
+    LegEquipment* pickupLegEquipment(LegEquipment* newLegEquipment);
 
     
     // 运动相关方法

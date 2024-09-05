@@ -10,6 +10,8 @@
 #include "../Items/Maps/Platform.h"
 #include "../Items/Armors/OldShirt.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
+#include "../Items/HeadEquipments/CapOfTheHero.h"
+#include "../Items/LegEquipments/WellWornTrousers.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     // This is useful if you want the scene to have the exact same dimensions as the view
@@ -144,6 +146,8 @@ void BattleScene::update() {
     Scene::update();
 
     spawnArmor();
+    spawnHeadEquipment();
+    spawnLegEquipment();
 
     checkGameOver();
 }
@@ -164,6 +168,20 @@ void BattleScene::processMovement() {
             if (armor != nullptr){
                 armor->updateMove(deltaTime);
                 checkCollision(armor, map);
+            }
+        }
+
+        for (auto headEquipment : headEquipments){
+            if (headEquipment != nullptr){
+                headEquipment->updateMove(deltaTime);
+                checkCollision(headEquipment, map);
+            }
+        }
+
+        for (auto legEquipment : legEquipments){
+            if (legEquipment != nullptr){
+                legEquipment->updateMove(deltaTime);
+                checkCollision(legEquipment, map);
             }
         }
     }
@@ -202,8 +220,13 @@ void BattleScene::processPicking() {
         if (character->isPicking()) {
             auto mountable = findNearestUnmountedMountable(character->pos(), 100.);
             if (mountable != nullptr) {
-                Armor* pickedArmor = dynamic_cast<Armor *>(pickupMountable(character, mountable));
-                if (pickedArmor != nullptr) {
+                if (auto pickedHeadEquipment = dynamic_cast<HeadEquipment *>(pickupMountable(character, mountable))){ // 如果拾取的物品是头部装备
+                    headEquipments.push_back(pickedHeadEquipment); // 将拾取的头部装备添加到headEquipments向量中
+                }
+                else if (auto pickedLegEquipment = dynamic_cast<LegEquipment *>(pickupMountable(character, mountable))){ // 如果拾取的物品是腿部装备
+                    legEquipments.push_back(pickedLegEquipment); // 将拾取的腿部装备添加到legEquipments向量中
+                }
+                else if (auto pickedArmor = dynamic_cast<Armor *>(pickupMountable(character, mountable))){ // 如果拾取的物品是盔甲
                     armors.push_back(pickedArmor); // 将拾取的盔甲添加到armors向量中
                 }
             }
@@ -234,6 +257,10 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
     // Limitation: currently only supports armor
     if (auto armor = dynamic_cast<Armor *>(mountable)) {
         return character->pickupArmor(armor);
+    } else if (auto headEquipment = dynamic_cast<HeadEquipment *>(mountable)) {
+        return character->pickupHeadEquipment(headEquipment);
+    } else if (auto legEquipment = dynamic_cast<LegEquipment *>(mountable)) {
+        return character->pickupLegEquipment(legEquipment);
     }
     return nullptr;
 }
@@ -257,43 +284,64 @@ void BattleScene::checkGameOver() {
     }
 }
 
-void BattleScene::spawnArmor() {
+// 定义模板函数
+template <typename T>
+void BattleScene::spawnMountable(std::vector<std::pair<T*, double>> itemList, std::vector<Map*> maps, std::vector<T*>& itemContainer) {
     // 生成一个随机数来决定是否生成物品
     if (std::rand() % 1000 != 0) {
         return; // 只有1/1000的概率继续执行
     }
 
-    // 定义物品类型和生成概率
-    std::vector<std::pair<Armor*, double>> armorList = {
-        {new OldShirt(), 0.5},
-        {new FlamebreakerArmor(), 0.5}
-    };
-
     // 计算总概率
     double totalProbability = 0;
-    for (const auto &armor : armorList) {
-        totalProbability += armor.second;
+    for (const auto &item : itemList) {
+        totalProbability += item.second;
     }
 
     // 生成一个随机数来决定掉落物品的类型
     double randomValue = (std::rand() / (double)RAND_MAX) * totalProbability;
-    Armor *selectedArmor = nullptr;
+    T *selectedItem = nullptr;
 
-    for (const auto &armor : armorList) {
-        if (randomValue < armor.second) {
-            selectedArmor = armor.first;
+    for (const auto &item : itemList) {
+        if (randomValue < item.second) {
+            selectedItem = item.first;
             break;
         }
-        randomValue -= armor.second;
+        randomValue -= item.second;
     }
 
-    if (selectedArmor != nullptr) {
-        addItem(selectedArmor);
-        armors.push_back(selectedArmor);
-        selectedArmor->unmount();
+    if (selectedItem != nullptr) {
+        addItem(selectedItem);
+        itemContainer.push_back(selectedItem);
+        selectedItem->unmount();
         // 设置掉落物品的初始位置
         auto floorRange = maps[0]->getFloorRange();
         double randomX = floorRange.x() + (std::rand() / (double)RAND_MAX) * (floorRange.y() - floorRange.x());
-        selectedArmor->setPos(randomX, sceneRect().top());
+        selectedItem->setPos(randomX, sceneRect().top());
     }
+}
+
+// 生成盔甲函数
+void BattleScene::spawnArmor() {
+    std::vector<std::pair<Armor*, double>> armorList = {
+        {new OldShirt(), 0.5},
+        {new FlamebreakerArmor(), 0.5}
+    };
+    spawnMountable(armorList, maps, armors);
+}
+
+void BattleScene::spawnHeadEquipment() {
+    std::vector<std::pair<HeadEquipment*, double>> headEquipmentList = {
+        {new CapOfTheHero(), 0.5}
+        // 添加其他头部装备
+    };
+    spawnMountable(headEquipmentList, maps, headEquipments);
+}
+
+void BattleScene::spawnLegEquipment() {
+    std::vector<std::pair<LegEquipment*, double>> legEquipmentList = {
+        {new WellWornTrousers(), 0.5}
+        // 添加其他腿部装备
+    };
+    spawnMountable(legEquipmentList, maps, legEquipments);
 }

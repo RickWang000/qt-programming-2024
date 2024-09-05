@@ -45,30 +45,6 @@ void Character::setPickDown(bool pickDown) {
     Character::pickDown = pickDown;
 }
 
-// const QPointF &Character::getVelocity() const {
-//     return velocity;
-// }
-
-// const QPointF &Character::getAcceleration() const {
-//     return acceleration;
-// }
-
-// void Character::setVelocity(const QPointF &velocity) {
-//     Character::velocity = velocity;
-// }
-
-// void Character::setAcceleration(const QPointF &acceleration) {
-//     Character::acceleration = acceleration;
-// }
-
-// bool Character::isOnGround() const {
-//     return onGround;
-// }
-
-// void Character::setOnGround(bool onGround) {
-//     Character::onGround = onGround;
-// }
-
 void Character::processInput() {
     auto velocity = getVelocity();
     const auto moveSpeed = 0.1;
@@ -125,6 +101,32 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     newArmor->mountToParent();
     armor = newArmor;
     return oldArmor;
+}
+
+HeadEquipment *Character::pickupHeadEquipment(HeadEquipment *newHeadEquipment) {
+    auto oldHeadEquipment = headEquipment;
+    if (oldHeadEquipment != nullptr) {
+        oldHeadEquipment->unmount();
+        oldHeadEquipment->setPos(newHeadEquipment->pos());
+        oldHeadEquipment->setParentItem(parentItem());
+    }
+    newHeadEquipment->setParentItem(this);
+    newHeadEquipment->mountToParent();
+    headEquipment = newHeadEquipment;
+    return oldHeadEquipment;
+}
+
+LegEquipment *Character::pickupLegEquipment(LegEquipment *newLegEquipment) {
+    auto oldLegEquipment = legEquipment;
+    if (oldLegEquipment != nullptr) {
+        oldLegEquipment->unmount();
+        oldLegEquipment->setPos(newLegEquipment->pos());
+        oldLegEquipment->setParentItem(parentItem());
+    }
+    newLegEquipment->setParentItem(this);
+    newLegEquipment->mountToParent();
+    legEquipment = newLegEquipment;
+    return oldLegEquipment;
 }
 
 // 获取生命值

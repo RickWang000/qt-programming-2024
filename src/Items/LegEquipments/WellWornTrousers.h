@@ -10,7 +10,7 @@
 
 class WellWornTrousers : public LegEquipment {
 public:
-    explicit WellWornTrousers(QGraphicsItem *parent);
+    explicit WellWornTrousers(QGraphicsItem *parent = nullptr);
 };
 
 

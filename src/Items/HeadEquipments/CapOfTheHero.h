@@ -10,7 +10,7 @@
 
 class CapOfTheHero: public HeadEquipment {
 public:
-    explicit CapOfTheHero(QGraphicsItem *parent);
+    explicit CapOfTheHero(QGraphicsItem *parent = nullptr);
 };
 
 

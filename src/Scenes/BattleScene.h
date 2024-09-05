@@ -23,6 +23,10 @@ public:
     template <typename T>
     void checkCollision(T* object, Map* map);
 
+    template <typename T>
+    void spawnMountable(std::vector<std::pair<T*, double>> itemList, std::vector<Map*> maps, std::vector<T*>& itemContainer);
+
+
     void processPicking() override;
 
 protected slots:
@@ -42,10 +46,15 @@ private:
 
     void checkGameOver();
     void spawnArmor();
+    void spawnHeadEquipment();
+    void spawnLegEquipment();
 
     std::vector<Map*> maps;
     std::vector<Character*> characters;
     std::vector<Armor*> armors;
+    std::vector<HeadEquipment*> headEquipments;
+    std::vector<LegEquipment*> legEquipments;
+    
 };
 
 
