@@ -4,6 +4,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <algorithm>
 #include "BattleScene.h"
 #include "../Items/Characters/Link.h"
 #include "../Items/Maps/Battlefield.h"
@@ -180,6 +181,7 @@ void BattleScene::update() {
     spawnMeleeWeapon();
     spawnBow();
     spawnArrow();
+    checkExpiredMountables();
 
     checkGameOver();
 }
@@ -443,4 +445,27 @@ void BattleScene::spawnArrow() {
         {new WoodArrow(), 0.25}
     };
     spawnMountable(arrowList, maps, arrows);
+}
+
+void BattleScene::checkExpiredMountables() {
+    auto now = QDateTime::currentDateTime();
+
+    auto checkAndRemove = [&](auto& container) {
+        container.erase(std::remove_if(container.begin(), container.end(), [&](auto item) {
+            if (item && !item->isMounted() && item->getSpawnTime().secsTo(now) > 5) {
+                removeItem(item);
+                delete item;
+                item = nullptr; // 将指针置为nullptr
+                return true;
+            }
+            return false;
+        }), container.end());
+    };
+
+    checkAndRemove(armors);
+    checkAndRemove(headEquipments);
+    checkAndRemove(legEquipments);
+    checkAndRemove(meleeWeapons);
+    checkAndRemove(bows);
+    checkAndRemove(arrows);
 }

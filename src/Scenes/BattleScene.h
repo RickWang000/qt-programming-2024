@@ -51,6 +51,7 @@ private:
     void spawnMeleeWeapon();
     void spawnBow();
     void spawnArrow();
+    void checkExpiredMountables();
 
     std::vector<Map*> maps;
     std::vector<Character*> characters;

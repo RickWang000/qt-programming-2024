@@ -4,6 +4,10 @@
 
 #include "Mountable.h"
 
+Mountable::Mountable() {
+    spawnTime = QDateTime::currentDateTime(); // 初始化生成时间
+}
+
 void Mountable::unmount() {
     mounted = false;
 }
@@ -14,4 +18,8 @@ bool Mountable::isMounted() const {
 
 void Mountable::mountToParent() {
     mounted = true;
+}
+
+QDateTime Mountable::getSpawnTime() const {
+    return spawnTime;
 }
