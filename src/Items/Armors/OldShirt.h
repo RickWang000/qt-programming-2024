@@ -10,7 +10,7 @@
 
 class OldShirt: public Armor {
 public:
-    explicit OldShirt(QGraphicsItem *parent);
+    explicit OldShirt(QGraphicsItem *parent = nullptr);
 };
 
 

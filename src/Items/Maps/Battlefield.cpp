@@ -14,5 +14,5 @@ qreal Battlefield::getFloorHeight() {
 QPointF Battlefield::getFloorRange() {
     auto sceneRect = sceneBoundingRect();
     auto absWidth = sceneRect.left() + sceneRect.right();
-    return {absWidth * 0.1, absWidth * 0.9};
+    return {absWidth * 0.06, absWidth * 0.94};
 }

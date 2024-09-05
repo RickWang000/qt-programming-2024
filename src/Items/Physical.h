@@ -4,6 +4,8 @@
 
 #include <QPointF>
 
+#define GRAVITY 0.001
+
 class Physical {
 public:
     const QPointF &getVelocity() const;
@@ -18,7 +20,7 @@ public:
 
 private:
     QPointF velocity{};
-    QPointF acceleration{};
+    QPointF acceleration{0, GRAVITY};
     bool onGround{};
 
 };

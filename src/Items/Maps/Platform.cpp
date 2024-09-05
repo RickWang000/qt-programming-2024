@@ -62,5 +62,6 @@ qreal Platform::getFloorHeight() {
 
 QPointF Platform::getFloorRange() {
     QPointF scenePos = pos();
-    return {scenePos.x(), scenePos.x() + boundingRect().width()};
+    double offset = boundingRect().width() * 0.07;
+    return {scenePos.x() - offset, scenePos.x() + boundingRect().width() - offset};
 }

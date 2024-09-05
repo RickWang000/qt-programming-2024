@@ -20,7 +20,8 @@ public:
 
     void processMovement() override;
 
-    void checkCollision(Character *character, Map *map);
+    template <typename T>
+    void checkCollision(T* object, Map* map);
 
     void processPicking() override;
 
@@ -40,10 +41,11 @@ private:
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
 
     void checkGameOver();
+    void spawnArmor();
 
     std::vector<Map*> maps;
     std::vector<Character*> characters;
-    Armor *spareArmor;
+    std::vector<Armor*> armors;
 };
 
 

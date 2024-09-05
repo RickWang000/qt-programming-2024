@@ -7,14 +7,17 @@
 
 #include "../Item.h"
 #include "../Mountable.h"
+#include "../Physical.h"
 
-class Armor : public Item, public Mountable {
+class Armor : public Item, public Mountable, public Physical {
 public:
     explicit Armor(QGraphicsItem *parent, const QString &pixmapPath);
 
     void mountToParent() override;
 
     void unmount() override;
+
+    void updateMove(double deltaTime) override;
 };
 
 

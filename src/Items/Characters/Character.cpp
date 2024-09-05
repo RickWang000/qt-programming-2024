@@ -71,7 +71,7 @@ void Character::setPickDown(bool pickDown) {
 
 void Character::processInput() {
     auto velocity = getVelocity();
-    const auto moveSpeed = 0.15;
+    const auto moveSpeed = 0.1;
     bool moving = false;
     if (isLeftDown()) {
         velocity.setX( - moveSpeed);
@@ -86,13 +86,12 @@ void Character::processInput() {
     if (!moving) {
         velocity.setX(0);
     }
-    auto acceleration = QPointF(0, 0);
+    auto acceleration = getAcceleration();
     if (isOnGround() && isJumpDown() && !lastJumpDown) {
-        takeDamage(30);
-        acceleration.setY(-0.012);
+        acceleration.setY(-0.015);
         setOnGround(false);
     } else {
-        acceleration.setY(0.001);
+        acceleration.setY(GRAVITY);
     }
     setVelocity(velocity);
     setAcceleration(acceleration);
@@ -160,5 +159,4 @@ void Character::initHealthDisplay() {
 void Character::updateHealthDisplay() {
     healthBar->setRect(0, 0, health, 15);
     healthText->setPlainText(QString("%1").arg(health));
-    qDebug() << "Health: " << health;
 }

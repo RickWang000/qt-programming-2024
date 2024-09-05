@@ -24,3 +24,11 @@ void Armor::unmount() {
         pixmapItem->setPos(0, -120);
     }
 }
+
+void Armor::updateMove(double deltaTime) {
+    if (!isMounted()) {
+        setAcceleration(QPointF(0, GRAVITY));
+        setVelocity(getVelocity() + getAcceleration() * deltaTime);
+        setPos(pos() + getVelocity() * deltaTime);
+    }
+}
