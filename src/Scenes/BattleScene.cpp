@@ -236,7 +236,7 @@ void BattleScene::checkGameOver() {
     for (auto character : characters) {
         if (character != nullptr && character->getHealth() <= 0) {
             // 游戏结束逻辑
-            QString winner = (character == characters[0]) ? "Player 1" : "Player 2";
+            QString winner = (character == characters[0]) ? "Player 2" : "Player 1";
             QMessageBox::information(nullptr, "Game Over", "Game Over! Winner is " + winner);
             // 停止游戏，销毁场景
             clear();

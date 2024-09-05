@@ -45,29 +45,29 @@ void Character::setPickDown(bool pickDown) {
     Character::pickDown = pickDown;
 }
 
-const QPointF &Character::getVelocity() const {
-    return velocity;
-}
+// const QPointF &Character::getVelocity() const {
+//     return velocity;
+// }
 
-const QPointF &Character::getAcceleration() const {
-    return acceleration;
-}
+// const QPointF &Character::getAcceleration() const {
+//     return acceleration;
+// }
 
-void Character::setVelocity(const QPointF &velocity) {
-    Character::velocity = velocity;
-}
+// void Character::setVelocity(const QPointF &velocity) {
+//     Character::velocity = velocity;
+// }
 
-void Character::setAcceleration(const QPointF &acceleration) {
-    Character::acceleration = acceleration;
-}
+// void Character::setAcceleration(const QPointF &acceleration) {
+//     Character::acceleration = acceleration;
+// }
 
-bool Character::isOnGround() const {
-    return onGround;
-}
+// bool Character::isOnGround() const {
+//     return onGround;
+// }
 
-void Character::setOnGround(bool onGround) {
-    Character::onGround = onGround;
-}
+// void Character::setOnGround(bool onGround) {
+//     Character::onGround = onGround;
+// }
 
 void Character::processInput() {
     auto velocity = getVelocity();
@@ -90,7 +90,7 @@ void Character::processInput() {
     if (isOnGround() && isJumpDown() && !lastJumpDown) {
         takeDamage(30);
         acceleration.setY(-0.012);
-        onGround = false;
+        setOnGround(false);
     } else {
         acceleration.setY(0.001);
     }

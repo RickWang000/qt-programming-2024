@@ -9,8 +9,9 @@
 #include "../HeadEquipments/HeadEquipment.h"
 #include "../Armors/Armor.h"
 #include "../LegEquipments/LegEquipment.h"
+#include "../Physical.h"
 
-class Character : public Item {
+class Character : public Item , public Physical {
 public:
     explicit Character(QGraphicsItem *parent);
 
@@ -37,16 +38,16 @@ public:
 
     
     // 运动相关方法
-    [[nodiscard]] const QPointF &getVelocity() const;
-    void setVelocity(const QPointF &velocity);
+    // [[nodiscard]] const QPointF &getVelocity() const;
+    // void setVelocity(const QPointF &velocity);
 
-    [[nodiscard]] const QPointF &getAcceleration() const;
-    void setAcceleration(const QPointF &acceleration);
+    // [[nodiscard]] const QPointF &getAcceleration() const;
+    // void setAcceleration(const QPointF &acceleration);
 
-    [[nodiscard]] bool isOnGround() const;
-    void setOnGround(bool onGround);
+    // [[nodiscard]] bool isOnGround() const;
+    // void setOnGround(bool onGround);
 
-    void updateMove(double deltaTime);
+    void updateMove(double deltaTime) override;
 
     // 生命值相关方法
     int getHealth() const;
@@ -59,8 +60,8 @@ protected:
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
     Armor *armor{};
-    QPointF velocity{};
-    QPointF acceleration{};
+    // QPointF velocity{};
+    // QPointF acceleration{};
     int health{100}; // 初始生命值为100
     QGraphicsTextItem* healthText{}; // 用于显示生命值
     QGraphicsRectItem* healthBar{}; // 用于显示生命值的血条
@@ -70,7 +71,7 @@ private:
     bool leftDown{}, rightDown{}, jumpDown{}, pickDown{};
     bool lastPickDown{}, lastJumpDown{};
     bool picking{};
-    bool onGround{};
+    // bool onGround{};
 };
 
 

@@ -18,6 +18,8 @@ add_executable(qt_programming_2024 src/main.cpp
         src/MyGame.h
         src/Items/Item.cpp
         src/Items/Item.h
+        src/Items/Physical.cpp
+        src/Items/Physical.h
         src/Items/Characters/Character.cpp
         src/Items/Characters/Character.h
         src/Items/Characters/Link.cpp
