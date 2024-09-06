@@ -4,3 +4,6 @@ LongSword::LongSword(QGraphicsItem *parent, const QString &pixmapPath) : MeleeWe
     
 }
 
+void LongSword::attack() {
+    // TODO implement
+}

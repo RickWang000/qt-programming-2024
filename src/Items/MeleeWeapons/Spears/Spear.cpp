@@ -4,3 +4,6 @@ Spear::Spear(QGraphicsItem *parent, const QString &pixmapPath) : MeleeWeapon(par
     
 }
 
+void Spear::attack() {
+    // TODO implement
+}

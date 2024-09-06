@@ -3,9 +3,16 @@
 
 #include "../MeleeWeapon.h"
 
+
 class Sword : public MeleeWeapon {
 public:
     explicit Sword(QGraphicsItem *parent, const QString &pixmapPath);
+
+    void mountToParent() override;
+
+    void attack() override;
+
+
 };
 
 #endif //QT_PROGRAMMING_2024_SWORD_H

@@ -29,3 +29,16 @@ void MeleeWeapon::updateMove(double deltaTime) {
         setPos(pos() + getVelocity() * deltaTime);
     }
 }
+
+void MeleeWeapon::attack() {
+    // do nothing
+
+}
+
+int MeleeWeapon::getAttackRange() const {
+    // return attackRange;
+}
+
+int MeleeWeapon::getDamage() const {
+    return damage;
+}

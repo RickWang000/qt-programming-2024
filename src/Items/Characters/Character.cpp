@@ -45,6 +45,22 @@ void Character::setPickDown(bool pickDown) {
     Character::pickDown = pickDown;
 }
 
+bool Character::isMeleeAttackDown() const {
+    return meleeAttackDown;
+}
+
+void Character::setMeleeAttackDown(bool meleeAttackDown) {
+    Character::meleeAttackDown = meleeAttackDown;
+}
+
+bool Character::isMeleeAttacking() const {
+    return meleeAttacking;
+}
+
+MeleeWeapon *Character::getMeleeWeapon() const {
+    return meleeWeapon;
+}
+
 void Character::processInput() {
     auto velocity = getVelocity();
     const auto moveSpeed = 0.1;
@@ -77,8 +93,21 @@ void Character::processInput() {
     } else {
         picking = false;
     }
+
+    if (isMeleeAttackDown() && !lastMeleeAttackDown) {
+        if (meleeWeapon) {
+            meleeWeapon->attack();
+        }
+        meleeAttacking = true;
+    } else {
+        meleeAttacking = false;
+    }
+
     lastPickDown = pickDown;
     lastJumpDown = jumpDown;
+    lastMeleeAttackDown = meleeAttackDown;
+
+    
 }
 
 void Character::updateMove(double deltaTime) {

@@ -24,11 +24,14 @@ public:
     [[nodiscard]] bool isJumpDown() const;
     [[nodiscard]] bool isPickDown() const;
     [[nodiscard]] bool isPicking() const;
+    [[nodiscard]] bool isMeleeAttackDown() const;
+    [[nodiscard]] bool isMeleeAttacking() const;
 
     void setLeftDown(bool leftDown);
     void setRightDown(bool rightDown);
     void setJumpDown(bool jumpDown);
     void setPickDown(bool pickDown);
+    void setMeleeAttackDown(bool meleeAttackDown);
 
     void processInput();
 
@@ -50,6 +53,8 @@ public:
     void initHealthDisplay();
     void updateHealthDisplay();
 
+    MeleeWeapon *getMeleeWeapon() const;
+
 protected:
     Armor *armor{};
     HeadEquipment *headEquipment{};
@@ -64,9 +69,9 @@ protected:
 
 //    QGraphicsEllipseItem *ellipseItem; // for debugging
 private:
-    bool leftDown{}, rightDown{}, jumpDown{}, pickDown{};
-    bool lastPickDown{}, lastJumpDown{};
-    bool picking{};
+    bool leftDown{}, rightDown{}, jumpDown{}, pickDown{}, meleeAttackDown{};
+    bool lastPickDown{}, lastJumpDown{}, lastMeleeAttackDown{};
+    bool picking{}, meleeAttacking{};
 };
 
 

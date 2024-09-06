@@ -111,6 +111,11 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
                 characters[0]->setPickDown(true);
             }
             break;
+        case Qt::Key_F:
+            if (characters[0] != nullptr) {
+                characters[0]->setMeleeAttackDown(true);
+            }
+            break;
         // 第二个角色的按键绑定 (IJKL)
         case Qt::Key_J:
             if (characters[1] != nullptr) {
@@ -130,6 +135,11 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_K:
             if (characters[1] != nullptr) {
                 characters[1]->setPickDown(true);
+            }
+            break;
+        case Qt::Key_Semicolon:
+            if (characters[1] != nullptr) {
+                characters[1]->setMeleeAttackDown(true);
             }
             break;
         default:
@@ -160,6 +170,11 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
                 characters[0]->setPickDown(false);
             }
             break;
+        case Qt::Key_F:
+            if (characters[0] != nullptr) {
+                characters[0]->setMeleeAttackDown(false);
+            }
+            break;
         // 第二个角色的按键绑定 (IJKL)
         case Qt::Key_J:
             if (characters[1] != nullptr) {
@@ -181,6 +196,11 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
                 characters[1]->setPickDown(false);
             }
             break;
+        case Qt::Key_Semicolon:
+            if (characters[1] != nullptr) {
+                characters[1]->setMeleeAttackDown(false);
+            }
+            break;
         default:
             Scene::keyReleaseEvent(event);
     }
@@ -197,7 +217,65 @@ void BattleScene::update() {
     spawnArrow();
     checkExpiredMountables();
 
+    processAttack();
+
     checkGameOver();
+}
+
+void BattleScene::processAttack() {
+    for (auto character : characters) {
+        if (character != nullptr) {
+            for (auto enemy : characters) {
+                if (enemy != nullptr && enemy != character) {
+                    if (isEnemyInRange(character, enemy, 150)) {
+                        attack(character, enemy);
+                        qDebug() << "Attack!";
+                    }
+                }
+            }
+        }
+    }
+}
+
+bool BattleScene::isEnemyInRange(Character *character, Character *enemy, qreal range) {
+    // 计算角色与敌人之间的距离
+    qreal distance = QLineF(character->pos(), enemy->pos()).length();
+    if (distance >= range) {
+        return false;
+    }
+
+    // 获取角色的旋转角度（以度为单位）
+    qreal characterRotation = character->rotation();
+
+    // 将角度转换为弧度
+    qreal characterRotationRad = qDegreesToRadians(characterRotation);
+
+    // 计算角色面向方向的向量
+    QPointF directionVector(cos(characterRotationRad), sin(characterRotationRad));
+
+    // 计算角色与敌人之间的向量
+    QPointF enemyVector = enemy->pos() - character->pos();
+
+    // 归一化敌人向量
+    qreal enemyVectorLength = sqrt(enemyVector.x() * enemyVector.x() + enemyVector.y() * enemyVector.y());
+    QPointF normalizedEnemyVector = enemyVector / enemyVectorLength;
+
+    // 计算两个向量的夹角
+    qreal dotProduct = directionVector.x() * normalizedEnemyVector.x() + directionVector.y() * normalizedEnemyVector.y();
+    qreal angle = acos(dotProduct);
+
+    // 判断夹角是否在允许的范围内（例如，10度）
+    qreal maxAngle = qDegreesToRadians(10.0); // 10度
+    return angle < maxAngle;
+    qDebug() << "angle: " << angle;
+}
+
+
+void BattleScene::attack(Character *character, Character *enemy) {
+    if (character->isMeleeAttackDown() && !character->isMeleeAttacking()) {
+        enemy->takeDamage(5);
+        character->setMeleeAttackDown(false);
+    } 
 }
 void BattleScene::processMovement() {
     Scene::processMovement();

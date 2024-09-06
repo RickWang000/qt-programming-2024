@@ -14,6 +14,16 @@ public:
     void unmount() override;
 
     void updateMove(double deltaTime) override;
+
+    virtual void attack() = 0;
+
+    int getAttackRange() const;
+
+    int getDamage() const;
+
+private:
+    int attackRange = 200;
+    int damage = 5;
 };
 
 #endif //QT_PROGRAMMING_2024_MELEEWEAPON_H

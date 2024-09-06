@@ -22,6 +22,12 @@ public:
 
     void processMovement() override;
 
+    void processAttack();
+
+    bool isEnemyInRange(Character* character, Character* enemy, qreal range);
+
+    void attack(Character* character, Character* enemy);
+    
     template <typename T>
     void checkCollision(T* object, Map* map);
 
