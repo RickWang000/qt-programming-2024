@@ -215,7 +215,7 @@ void BattleScene::update() {
     spawnMeleeWeapon();
     spawnBow();
     spawnArrow();
-    checkExpiredMountables();
+    // checkExpiredMountables();
 
     processAttack();
 
@@ -494,7 +494,7 @@ void BattleScene::spawnArmor() {
 
 void BattleScene::spawnHeadEquipment() {
     std::vector<std::pair<HeadEquipment*, double>> headEquipmentList = {
-        {new CapOfTheHero(), 0.5},
+        // {new CapOfTheHero(), 0.5},
         {new FlamebreakerHelm(), 0.25},
         {new ThunderHelm(), 0.125},
         {new ZantsHelmet(), 0.125}
@@ -544,11 +544,13 @@ void BattleScene::checkExpiredMountables() {
 
     auto checkAndRemove = [&](auto& container) {
         container.erase(std::remove_if(container.begin(), container.end(), [&](auto item) {
-            if (item && !item->isMounted() && item->getLastUnmountTime().secsTo(now) > 10) { // 如果物品未被拾取时间超过10秒
-                removeItem(item);
-                delete item;
-                item = nullptr; // 将指针置为nullptr
-                return true;
+            if (item) { // 先检测物体是否存在
+                if (!item->isMounted() && item->getLastUnmountTime().secsTo(now) > 10) { // 如果物品未被拾取时间超过10秒
+                    removeItem(item);
+                    delete item;
+                    item = nullptr; // 将指针置为nullptr
+                    return true;
+                }
             }
             return false;
         }), container.end());
@@ -568,7 +570,7 @@ void BattleScene::handleCheatCode() {
 
     // 定义一个映射，将作弊码映射到生成物体的函数
     static const QMap<QString, std::function<void()>> cheatCodeMap = {
-        {"11", [this, spawnPos]() { auto item = new OldShirt(); item->setPos(spawnPos); armors.push_back(item); addItem(item); }},
+        // {"11", [this, spawnPos]() { auto item = new OldShirt(); item->setPos(spawnPos); armors.push_back(item); addItem(item); }},
         {"12", [this, spawnPos]() { auto item = new FlamebreakerArmor(); item->setPos(spawnPos); armors.push_back(item); addItem(item); }},
         {"21", [this, spawnPos]() { auto item = new CapOfTheHero(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},
         {"22", [this, spawnPos]() { auto item = new FlamebreakerHelm(); item->setPos(spawnPos); headEquipments.push_back(item); addItem(item); }},

@@ -5,12 +5,13 @@
 #include "HeadEquipment.h"
 
 HeadEquipment::HeadEquipment(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {
+    setScale(0.6);
 }
 
 void HeadEquipment::mountToParent() {
     Mountable::mountToParent();
-    setScale(0.4);
-    setPos(-30, -210);
+    setScale(0.6);
+    setPos(-30, -215);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, 0);
     }

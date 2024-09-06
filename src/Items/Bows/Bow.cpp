@@ -7,8 +7,10 @@ Bow::Bow(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmap
 
 void Bow::mountToParent() {
     Mountable::mountToParent();
-    setScale(0.8);
-    setPos(-59, -176);
+    setScale(1.2);
+    setTransform(QTransform().scale(1, 1));
+    setPos(-110, -120);
+    setRotation(-45);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, 0);
     }

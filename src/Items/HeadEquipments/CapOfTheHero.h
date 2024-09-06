@@ -11,6 +11,11 @@
 class CapOfTheHero: public HeadEquipment {
 public:
     explicit CapOfTheHero(QGraphicsItem *parent = nullptr);
+
+    void mountToParent() override;
+
+    void unmount() override;
+
 };
 
 

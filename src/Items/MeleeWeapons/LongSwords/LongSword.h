@@ -7,6 +7,7 @@ class LongSword : public MeleeWeapon {
 public:
     explicit LongSword(QGraphicsItem *parent, const QString &pixmapPath);
 
+    void mountToParent() override;
     void attack() override;
 };
 

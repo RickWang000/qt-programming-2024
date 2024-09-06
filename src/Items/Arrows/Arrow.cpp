@@ -7,7 +7,7 @@ Arrow::Arrow(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pi
 
 void Arrow::mountToParent() {
     Mountable::mountToParent();
-    setScale(0.8);
+    setScale(1);
     setPos(-59, -176);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, 0);

@@ -7,6 +7,8 @@ class Spear : public MeleeWeapon {
 public:
     explicit Spear(QGraphicsItem *parent, const QString &pixmapPath);
 
+    void mountToParent() override;
+
     void attack() override;
 };
 
