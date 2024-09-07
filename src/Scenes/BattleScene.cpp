@@ -229,7 +229,6 @@ void BattleScene::processAttack() {
                 if (enemy != nullptr && enemy != character) {
                     if (isEnemyInRange(character, enemy, 150)) {
                         attack(character, enemy);
-                        qDebug() << "Attack!";
                     }
                 }
             }
@@ -600,4 +599,5 @@ void BattleScene::handleCheatCode() {
     }
 
     cheatCodeInput->clear(); // 清空输入框
+    cheatCodeInput->clearFocus(); // 失去焦点
 }

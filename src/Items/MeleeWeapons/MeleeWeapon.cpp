@@ -30,7 +30,7 @@ void MeleeWeapon::updateMove(double deltaTime) {
     }
 }
 
-void MeleeWeapon::attack() {
+void MeleeWeapon::playAttackAnimation() {
     // do nothing
 
 }

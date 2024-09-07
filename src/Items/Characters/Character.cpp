@@ -96,7 +96,7 @@ void Character::processInput() {
 
     if (isMeleeAttackDown() && !lastMeleeAttackDown) {
         if (meleeWeapon) {
-            meleeWeapon->attack();
+            meleeWeapon->playAttackAnimation();
         }
         meleeAttacking = true;
     } else {

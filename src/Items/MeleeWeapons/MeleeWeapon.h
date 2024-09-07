@@ -15,7 +15,7 @@ public:
 
     void updateMove(double deltaTime) override;
 
-    virtual void attack() = 0;
+    virtual void playAttackAnimation() = 0;
 
     int getAttackRange() const;
 
