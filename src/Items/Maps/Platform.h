@@ -2,14 +2,15 @@
 #define QT_PROGRAMMING_2024_PLATFORM_H
 
 #include "Map.h"
+#include "../Elemental.h"
 
-enum class MaterialType {
-    Wood,
-    Metal,
-    Stone
-};
+// enum class MaterialType {
+//     Wood,
+//     Metal,
+//     Stone
+// };
 
-class Platform: public Map {
+class Platform: public Map, public Elemental {
 public:
     explicit Platform(QGraphicsItem *parent = nullptr,
                       MaterialType material = MaterialType::Wood,
@@ -22,7 +23,7 @@ public:
     QPointF getFloorRange() override;
 
 private:
-    MaterialType material{};
+    // MaterialType material{};
     qint32 position{};
 };
 

@@ -4,8 +4,9 @@
 #include "../Item.h"
 #include "../Mountable.h"
 #include "../Physical.h"
+#include "../Elemental.h"
 
-class Arrow : public Item, public Mountable, public Physical {
+class Arrow : public Item, public Mountable, public Physical, public Elemental {
 public:
     explicit Arrow(QGraphicsItem *parent = nullptr, const QString &pixmapPath = "");
 

@@ -1,7 +1,7 @@
 #include "Platform.h"
 
-Platform::Platform(QGraphicsItem *parent, MaterialType material, const qint32 position)
-    : Map(parent, ""), material(material), position(position) {
+Platform::Platform(QGraphicsItem *parent, MaterialType material, qint32 position)
+    : Map(parent, ""), position(position) {
     // 根据材质类型初始化平台的外观
     QString pixmapPath;
     switch (material) {
@@ -14,6 +14,8 @@ Platform::Platform(QGraphicsItem *parent, MaterialType material, const qint32 po
         case MaterialType::Stone:
             pixmapPath = ":/Items/Maps/Platform/Stone.png";
             break;
+        default:
+            pixmapPath = "";
     }
 
     // 设置平台的外观

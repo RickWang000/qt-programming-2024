@@ -6,4 +6,5 @@
 
 FlamebreakerArmor::FlamebreakerArmor(QGraphicsItem *parent) : Armor(parent,
     ":/Items/Armors/FlamebreakerArmor/FlamebreakerArmor.png") {
+        setResistElement(ElementalType::Fire);
 }

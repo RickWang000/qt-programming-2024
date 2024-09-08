@@ -5,5 +5,5 @@
 #include "OldShirt.h"
 
 OldShirt::OldShirt(QGraphicsItem *parent) : Armor(parent, ":/Items/Armors/OldShirt/OldShirt.png") {
-
+    setResistElement(ElementalType::None);
 }

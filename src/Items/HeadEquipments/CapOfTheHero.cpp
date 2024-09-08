@@ -6,6 +6,7 @@
 
 CapOfTheHero::CapOfTheHero(QGraphicsItem *parent) : HeadEquipment(parent,
     ":/Items/HeadEquipments/CapOfTheHero/CapOfTheHero.png") {
+    setResistElement(ElementalType::None);
     }
 
 void CapOfTheHero::mountToParent() {

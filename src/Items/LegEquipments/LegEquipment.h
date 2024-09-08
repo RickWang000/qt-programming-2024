@@ -9,8 +9,9 @@
 #include "../Item.h"
 #include "../Mountable.h"
 #include "../Physical.h"
+#include "../Elemental.h"
 
-class LegEquipment: public Item, public Mountable, public Physical {
+class LegEquipment: public Item, public Mountable, public Physical, public Elemental {
 public:
     explicit LegEquipment(QGraphicsItem *parent, const QString &pixmapPath);
 

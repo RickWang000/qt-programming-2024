@@ -5,4 +5,5 @@
 #include "WellWornTrousers.h"
 
 WellWornTrousers::WellWornTrousers(QGraphicsItem *parent) : LegEquipment(parent, ":/Items/LegEquipments/WellWornTrousers/WellWornTrousers.png") {
+    setResistElement(ElementalType::None);
 }

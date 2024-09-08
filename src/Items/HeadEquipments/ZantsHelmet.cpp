@@ -2,4 +2,6 @@
 #include "ZantsHelmet.h"
 
 ZantsHelmet::ZantsHelmet(QGraphicsItem *parent) : HeadEquipment(parent,
-    ":/Items/HeadEquipment/ZantsHelmet/ZantsHelmet.png") {}
+    ":/Items/HeadEquipment/ZantsHelmet/ZantsHelmet.png") {
+    setResistElement(ElementalType::Ice);
+    }

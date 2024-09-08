@@ -13,8 +13,9 @@
 #include "../MeleeWeapons/MeleeWeapon.h"
 #include "../Bows/Bow.h"
 #include "../Arrows/Arrow.h"
+#include "../Elemental.h"
 
-class Character : public Item , public Physical {
+class Character : public Item , public Physical , public Elemental {
 public:
     explicit Character(QGraphicsItem *parent);
 

@@ -11,6 +11,7 @@ Character::Character(QGraphicsItem *parent) : Item(parent,""), healthText(new QG
 //    ellipseItem->setBrush(Qt::green);          // Fill color
 //    ellipseItem->setZValue(1);
     initHealthDisplay();
+    setMaterial(MaterialType::Character);
 }
 
 bool Character::isLeftDown() const {

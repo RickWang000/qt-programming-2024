@@ -27,6 +27,8 @@ add_executable(
         src/Items/Mountable.h
         src/Items/Physical.cpp
         src/Items/Physical.h
+        src/Items/Elemental.cpp
+        src/Items/Elemental.h
 
         src/Items/Armors/Armor.cpp
         src/Items/Armors/Armor.h

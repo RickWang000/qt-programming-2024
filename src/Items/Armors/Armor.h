@@ -8,8 +8,9 @@
 #include "../Item.h"
 #include "../Mountable.h"
 #include "../Physical.h"
+#include "../Elemental.h"
 
-class Armor : public Item, public Mountable, public Physical {
+class Armor : public Item, public Mountable, public Physical, public Elemental {
 public:
     explicit Armor(QGraphicsItem *parent, const QString &pixmapPath);
 
