@@ -227,7 +227,10 @@ void BattleScene::processAttack() {
         if (character != nullptr) {
             for (auto enemy : characters) {
                 if (enemy != nullptr && enemy != character) {
-                    if (isEnemyInRange(character, enemy, 150)) {
+                    if (character->getMeleeWeapon() == nullptr) {
+                        continue;
+                    }
+                    if (isEnemyInRange(character, enemy, character->getMeleeWeapon()->getAttackRange())) {
                         attack(character, enemy);
                     }
                 }
@@ -272,7 +275,10 @@ bool BattleScene::isEnemyInRange(Character *character, Character *enemy, qreal r
 
 void BattleScene::attack(Character *character, Character *enemy) {
     if (character->isMeleeAttackDown() && !character->isMeleeAttacking()) {
-        enemy->takeDamage(5);
+        if (character->getMeleeWeapon() == nullptr) {
+            return;
+        }
+        enemy->takeDamage(character->getMeleeWeapon()->getDamage());
         character->setMeleeAttackDown(false);
     } 
 }

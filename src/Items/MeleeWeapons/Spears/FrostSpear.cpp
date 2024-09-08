@@ -5,6 +5,6 @@ FrostSpear::FrostSpear(QGraphicsItem *parent) : Spear(parent,
     setMaterial(MaterialType::Metal);
     setElement(ElementalType::Ice);
 
-    setAttackRange(400);
+    setAttackRange(300);
     setDamage(10);
 }

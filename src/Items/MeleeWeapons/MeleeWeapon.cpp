@@ -36,7 +36,7 @@ void MeleeWeapon::playAttackAnimation() {
 }
 
 int MeleeWeapon::getAttackRange() const {
-    // return attackRange;
+    return attackRange;
 }
 
 void MeleeWeapon::setAttackRange(int attackRange) {
