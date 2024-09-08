@@ -15,6 +15,18 @@ public:
     void unmount() override;
 
     void updateMove(double deltaTime) override;
+
+    int getAttackRange() const;
+
+    void setAttackRange(int attackRange);
+
+    int getMultiShot() const;
+
+    void setMultiShot(int multiShot);
+
+private:
+    int attackRange = 200;
+    int multiShot = 1;
 };
 
 #endif //QT_PROGRAMMING_2024_BOW_H

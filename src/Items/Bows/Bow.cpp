@@ -31,3 +31,19 @@ void Bow::updateMove(double deltaTime) {
         setPos(pos() + getVelocity() * deltaTime);
     }
 }
+
+int Bow::getAttackRange() const {
+    return attackRange;
+}
+
+void Bow::setAttackRange(int attackRange) {
+    Bow::attackRange = attackRange;
+}
+
+int Bow::getMultiShot() const {
+    return multiShot;
+}
+
+void Bow::setMultiShot(int multiShot) {
+    Bow::multiShot = multiShot;
+}

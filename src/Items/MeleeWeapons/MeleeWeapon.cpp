@@ -39,6 +39,14 @@ int MeleeWeapon::getAttackRange() const {
     // return attackRange;
 }
 
+void MeleeWeapon::setAttackRange(int attackRange) {
+    MeleeWeapon::attackRange = attackRange;
+}
+
 int MeleeWeapon::getDamage() const {
     return damage;
+}
+
+void MeleeWeapon::setDamage(int damage) {
+    MeleeWeapon::damage = damage;
 }

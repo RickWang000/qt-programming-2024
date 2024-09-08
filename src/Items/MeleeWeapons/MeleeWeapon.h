@@ -22,6 +22,10 @@ public:
 
     int getDamage() const;
 
+    void setAttackRange(int attackRange);
+
+    void setDamage(int damage);
+
 private:
     int attackRange = 200;
     int damage = 5;
